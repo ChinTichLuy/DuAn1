@@ -1,0 +1,15 @@
+{
+    "name": "acer/du-an1_nhom1",
+    "autoload": {
+        "psr-4": {
+            "Acer\\DuAn1Nhom1\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nguyễn Thế Huy Hoàng",
+            "email": "hoangnthph49014@gmail.com"
+        }
+    ],
+    "require": {}
+}
