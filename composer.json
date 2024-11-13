@@ -2,8 +2,11 @@
     "name": "acer/du-an1_nhom1",
     "autoload": {
         "psr-4": {
-            "Acer\\DuAn1Nhom1\\": "src/"
-        }
+            "App\\": "src/"
+        },
+        "files": [
+            "helper.php"
+        ]
     },
     "authors": [
         {
@@ -11,5 +14,11 @@
             "email": "hoangnthph49014@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "bramus/router": "~1.6",
+        "eftec/bladeone": "^4.16",
+        "doctrine/dbal": "^4.2",
+        "rakit/validation": "^1.4",
+        "vlucas/phpdotenv": "^5.6"
+    }
 }
