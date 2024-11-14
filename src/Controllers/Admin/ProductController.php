@@ -22,7 +22,6 @@ class ProductController extends Controller implements CRUDinterfaces{
         return $this->viewAdmin(self::PATH_VIEW.__FUNCTION__);
     }
     public function update(string $id){
-
     }
     public function delete(string $id){
 
