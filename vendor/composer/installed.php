@@ -3,7 +3,7 @@
         'name' => 'acer/du-an1_nhom1',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '117e0699bedc023a9e6f8c451596636709e49274',
+        'reference' => '2ade5d023f6ef6f568708000920ecc7ad0ec6409',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'acer/du-an1_nhom1' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '117e0699bedc023a9e6f8c451596636709e49274',
+            'reference' => '2ade5d023f6ef6f568708000920ecc7ad0ec6409',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
