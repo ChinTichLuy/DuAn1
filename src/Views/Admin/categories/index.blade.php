@@ -72,7 +72,8 @@
                                 </td>
 
                                 <td>
-                                    <span class="badge font-size-12 p-2 {{ $category['status'] ? 'bg-success' : 'bg-danger' }}">
+                                    <span
+                                        class="badge font-size-12 p-2 {{ $category['status'] ? 'bg-success' : 'bg-danger' }}">
                                         {{ $category['status'] ? 'public' : 'pending' }}
                                     </span>
                                 </td>
@@ -100,7 +101,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#"
+                                                <a href="{{ routeAdmin('categories/' . $category['id']) }}"
                                                     class="dropdown-item edit-list">
                                                     <i class="fa-regular fa-eye font-size-16 text-warning me-1"
                                                         style="color: #FFD43B;"></i>
@@ -108,10 +109,11 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <form action="#"
+                                                <form
+                                                    action="{{ routeAdmin('categories/' . $category['id'] . '/delete') }}"
                                                     method="POST" id="category-form-delete-{{ $category['id'] }}">
                                                     @csrf
-                                                    @method("DELETE")
+                                                    @method('DELETE')
 
 
                                                     <button type='button' class="dropdown-item remove-list"
@@ -129,14 +131,13 @@
                             @endforeach
                         </tbody>
                     </table>
-
-
-                    {{-- <div class="row">
-                        {{ $categories->links('admin.layouts.components.pagination') }}
-                    </div> --}}
-
-
                 </div>
+
+                @if($page && $totalPage)
+                <div class="row">
+                    @include('layouts.components.pagination', ['page' => $page, 'totalPage' => $totalPage])
+                </div>
+                @endif
                 <!-- end table responsive -->
             </div>
             <!-- end card body -->
@@ -146,4 +147,8 @@
     <!-- end col -->
 </div>
 
+@endsection
+
+@section('script')
+<script src="{{ asset('js/categories/index.js') }}"></script>
 @endsection

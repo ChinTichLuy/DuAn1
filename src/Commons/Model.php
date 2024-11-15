@@ -147,6 +147,23 @@ class Model
 		}
 	}
 
+
+	// xóa mềm demo - chuyển deleted_at từ 0 -> 1
+	public function delete2($id)
+	{
+		try {
+			return $this->queryBuilder
+				->update($this->tableName)
+				->set('deleted_at', '?')
+				->where('id = ?')
+				->setParameter('0', true)
+				->setParameter('1', $id)
+				->executeQuery();
+		} catch (\Throwable $th) {
+			die($th->getMessage());
+		}
+	}
+
 	public function __destruct()
 	{
 		$this->connect = null;
