@@ -20,8 +20,8 @@ if (!function_exists('routeAdmin')) {
 }
 
 
-if (!function_exists('routeAdmin')) {
-    function routeAdmin($url = null)
+if (!function_exists('routeClient')) {
+    function routeClient($url = null)
     {
         return $_ENV['BASE_URL'] . $url;
     }
@@ -99,9 +99,26 @@ if (!function_exists('formatPrice')) {
 if (!function_exists('error')) {
     function error($field)
     {
-        if (!empty($_SESSION['errors']) && !empty($_SESSION['errors'][$field])) {
-            return $_SESSION['errors'][$field];
+        // if (!empty($_SESSION['errors']) && !empty($_SESSION['errors'][$field])) {
+        //     return $_SESSION['errors'][$field];
+        // }
+
+
+        if (!empty($_SESSION['errors'])) {
+            // Chuyển `product[name]` thành `product.name` để duyệt chính xác
+            $keys = explode('.', str_replace(['[', ']'], ['.', ''], $field));
+
+            // Bắt đầu từ mảng lỗi gốc
+            $current = $_SESSION['errors'];
+            foreach ($keys as $key) {
+                if (!isset($current[$key])) {
+                    return null; // Không tìm thấy lỗi
+                }
+                $current = $current[$key];
+            }
+            return $current; // Trả về lỗi cuối cùng
         }
+        return null;
     }
 }
 

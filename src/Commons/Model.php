@@ -148,6 +148,7 @@ class Model
 	}
 
 
+
 	// xóa mềm demo - chuyển deleted_at từ 0 -> 1
 	public function delete2($id)
 	{
