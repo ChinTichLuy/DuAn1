@@ -47,43 +47,49 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Image</th>
                                     <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Created_at</th>
-                                    <th>Updated_at</th>
+                                    <th>Sku</th>
+                                    <th>Category</th>
+                                    <th>Price_Regular</th>
+                                    <th>Price_Sale</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
 
-                                {{-- @foreach ($categories as $category)
+                                @foreach ($products as $product)
                                     <tr>
                                         <td class="dtr-control sorting_1" tabindex="0">
-                                            <div class="d-none">{{ $category['id'] }}</div>
+                                            <div class="d-none">{{ $product['id'] }}</div>
                                             <div class="form-check font-size-16"> <input class="form-check-input"
-                                                    type="checkbox" id="customerlistcheck-{{ $category['id'] }}"> <label
+                                                    type="checkbox" id="customerlistcheck-{{ $product['id'] }}"> <label
                                                     class="form-check-label"
-                                                    for="customerlistcheck-{{ $category['id'] }}"></label> </div>
+                                                    for="customerlistcheck-{{ $product['id'] }}"></label> </div>
+                                        </td>
+                                        <td>
+                                            <img src="{{ getImage($product['thumb_image']) }}" alt="{{ $product['name'] }}"
+                                                width="50px" height="50px">
+                                        </td>
+                                        <td>
+                                            {{ $product['name'] }}
                                         </td>
 
                                         <td>
-                                            {{ $category['name'] }}
+                                            {{ $product['sku'] }}
                                         </td>
 
                                         <td>
-                                            <span
-                                                class="badge font-size-12 p-2 {{ $category['status'] ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $category['status'] ? 'public' : 'pending' }}
-                                            </span>
+                                            1
                                         </td>
 
                                         <td>
-                                            {{ $category['created_at'] }}
+                                            {{ $product['price_regular'] }}
                                         </td>
 
                                         <td>
-                                            {{ $category['updated_at'] }}
+                                            {{ $product['price_sale'] }}
                                         </td>
 
                                         <td>
@@ -94,14 +100,14 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end" style="">
                                                     <li>
-                                                        <a href="{{ routeAdmin('categories/' . $category['id'] . '/edit') }}"
+                                                        <a href="{{ routeAdmin('products/' . $product['id'] . '/edit') }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="mdi mdi-pencil font-size-16 text-success me-1"></i>
                                                             Edit
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ routeAdmin('categories/' . $category['id']) }}"
+                                                        <a href="{{ routeAdmin('products/' . $product['id']) }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="fa-regular fa-eye font-size-16 text-warning me-1"
                                                                 style="color: #FFD43B;"></i>
@@ -110,16 +116,16 @@
                                                     </li>
                                                     <li>
                                                         <form
-                                                            action="{{ routeAdmin('categories/' . $category['id'] . '/delete') }}"
-                                                            method="POST" id="category-form-delete-{{ $category['id'] }}">
+                                                            action="{{ routeAdmin('products/' . $product['id'] . '/delete') }}"
+                                                            method="POST" id="product-form-delete-{{ $product['id'] }}">
                                                             @csrf
                                                             @method('DELETE')
 
 
                                                             <button type='button' class="dropdown-item remove-list"
-                                                                onclick="handleDelete({{ $category['id'] }})">
+                                                                onclick="handleDelete({{ $product['id'] }})">
                                                                 <i
-                                                                    class="mdi mdi-trash-can font-size-{{ $category['id'] }} text-danger me-1"></i>
+                                                                    class="mdi mdi-trash-can font-size-{{ $product['id'] }} text-danger me-1"></i>
                                                                 Delete
                                                             </button>
                                                         </form>
@@ -128,7 +134,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -149,4 +155,8 @@
         </div>
         <!-- end col -->
     </div>
+@endsection
+
+@section('script')
+    <script src="{{ asset('js/products/index.js') }}"></script>
 @endsection

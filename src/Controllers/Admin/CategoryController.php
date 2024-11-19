@@ -27,7 +27,7 @@ class CategoryController extends Controller implements CRUDinterfaces
         [$categories, $totalPage] = $this->category->paginate($page, $perPage);
 
         // nếu số page lớn hơn tổng page hiện có thì redirect về trang list page=1
-        if($page > $totalPage){
+        if ($page > $totalPage) {
             return header('location: ' . routeAdmin('categories'));
         }
         // intval
@@ -37,7 +37,7 @@ class CategoryController extends Controller implements CRUDinterfaces
         return $this->viewAdmin(self::PATH_VIEW . __FUNCTION__, [
             'categories' => $categories,
             'page' => $page,
-            'totalPage' => (int)$totalPage
+            'totalPage' => (int) $totalPage
         ]);
     }
     public function create()
@@ -98,7 +98,8 @@ class CategoryController extends Controller implements CRUDinterfaces
         // nếu không tìm thấy category redirect trang list
         if (!$category) {
             return header('location: ' . routeAdmin('categories'));
-        };
+        }
+        ;
 
         return $this->viewAdmin(self::PATH_VIEW . __FUNCTION__, [
             'category' => $category
@@ -129,7 +130,7 @@ class CategoryController extends Controller implements CRUDinterfaces
                 'slug' => $_POST['name'] != $category['name'] ? slug($_POST['name']) : $category['slug'],
                 'description' => $_POST['description'],
                 'status' => $_POST['status'] ??= 0,
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y/m/d H:i:s')
             ]);
 
             toastr('success', 'Sửa thành công');
