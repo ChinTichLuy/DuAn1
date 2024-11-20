@@ -6,7 +6,11 @@ use App\Interfaces\CRUDinterfaces;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductColor;
+use App\Models\ProductGallery;
+use App\Models\ProductTag;
+use App\Models\ProductVariants;
 use App\Models\Tag;
+use Exception;
 
 class ProductController extends Controller implements CRUDinterfaces
 {
@@ -17,6 +21,10 @@ class ProductController extends Controller implements CRUDinterfaces
     private Product $product;
     private $connect;
 
+    private ProductGallery $productGallery;
+    private ProductVariants $productVariants;
+
+    private ProductTag $productTag;
 
     public function __construct()
     {
@@ -24,14 +32,18 @@ class ProductController extends Controller implements CRUDinterfaces
         $this->category = new Category();
         $this->productColor = new ProductColor();
         $this->tag = new Tag();
-        $this->product = new Product();
-        $this->connect = $this->product->getConnect();
 
+        // Những bảng cần insert
+        $this->product = new Product();
+        $this->productGallery = new ProductGallery();
+        $this->productVariants = new ProductVariants();
+        $this->productTag = new ProductTag();
+
+        $this->connect = $this->product->getConnect();
     }
     public function index()
     {
         $products = $this->product->getAll('*');
-
 
         // dd($products);
 
@@ -84,101 +96,91 @@ class ProductController extends Controller implements CRUDinterfaces
             // redirect về trang create
             return header('location: ' . routeAdmin('products/create'));
         } else {
+
             $data = $_POST + $_FILES;
 
-            [$dataProduct, $dataProductTags, $dataProductVariants] = $this->handle($data);
+            [$dataProduct, $dataProductTags, $dataProductVariants, $dataProductGallerys] = $this->handle($data);
 
-            $productImages = upload_file([
-                'name' => $dataProduct['thumb_image']['name']['thumb_image'],
-                'tmp_name' => $dataProduct['thumb_image']['tmp_name']['thumb_image']
-            ]);
+            $this->connect->beginTransaction();
 
-            $dataProduct['thumb_image'] = $productImages ?: null;
-            $dataProduct['price_sale'] = $dataProduct['price_sale'] ?: 0;
+            try {
+                $productImages = upload_file([
+                    'name' => $dataProduct['thumb_image']['name']['thumb_image'],
+                    'tmp_name' => $dataProduct['thumb_image']['tmp_name']['thumb_image']
+                ], 'products');
 
-            $this->product->insert($dataProduct);
-            toastr('success', 'success');
-            return header('location: ' . routeAdmin('products'));
+                $dataProduct['thumb_image'] = $productImages ?: null;
+                $dataProduct['price_sale'] = $dataProduct['price_sale'] ?: 0;
+
+                $imageTest = [];
+
+                $productId = $this->product->insertGetId($dataProduct);
+
+                // Nếu insert product không thành công
+                if (!$productId) {
+                    throw new Exception('Insert Product Faild');
+                }
+                ;
+
+                if (!empty($dataProductGallerys)) {
+                    foreach ($dataProductGallerys as $gallery) {
+                        $gallery['product_id'] = $productId;
+                        $imageTest[] = $gallery;
+                    }
+                }
+
+                foreach($imageTest as $value){
+                    $this->productGallery->insert($value);
+                }
+
+                // dd($imageTest);
+
+                if (!empty($dataProductTags)) {
+                    foreach ($dataProductTags as $tag) {
+                        $resultTag = $this->productTag->insert([
+                            'product_id' => $productId,
+                            'tag_id' => $tag
+                        ]);
+
+                        if (!$resultTag) {
+                            throw new Exception("Insert Tag {$tag} Faild");
+                        }
+                    }
+                }
+
+                if (!empty($dataProductVariants)) {
+                    foreach ($dataProductVariants as $variant) {
+                        $variant['product_id'] = $productId;
+                        $resultVariant = $this->productVariants->insert($variant);
+
+                        if (!$resultVariant) {
+                            throw new Exception("Insert variant {$resultVariant} Faild");
+                        }
+                    }
+                }
+
+                // if (!empty($dataProductGallerys)) {
+                //     foreach ($dataProductGallerys as $gallery) {
+                //         $gallery['product_id'] = $productId;
+                //         $resultGallery = $this->productGallery->insert($gallery);
+
+                //         if (!$resultGallery) {
+                //             throw new Exception("Insert gallery {$resultGallery} Faild");
+                //         }
+                //     }
+                // }
+
+                $this->connect->commit();
+
+                toastr('success', 'success');
+                return header('location: ' . routeAdmin('products'));
+
+            } catch (\Throwable $th) {
+                $this->connect->rollBack();
+                toastr('error', 'error');
+                die('Error' . $th->getMessage());
+            }
         }
-
-
-
-
-
-
-        // $this->connect->beginTransaction();
-
-        // try {
-
-        //     $product = $this->product->insert($dataProduct);
-
-        //     if($product){
-
-        //     }
-
-
-
-        //     $this->connect->commit();
-        // } catch (\Throwable $th) {
-        //     $this->connect->rollBack();
-        //     die('LuxChill Error: ' . $th->getMessage());
-        // }
-
-
-        // dd($dataProduct);
-
-        // $products = $this->product->insert($dataProduct);
-
-        // if ($products) {
-        //     toastr('success', 'Thêm thành công');
-        //     return header('location: ' . routeAdmin('products'));
-        // }
-
-        // return header('location: ' . routeAdmin('products/create'));
-
-        // dd($dataProduct);
-
-
-
-
-        // Nếu k insert không thành công , thì k insert ảnh
-
-
-        // dd()
-
-
-        // dd($dataProduct['thumb_image']['name']['thumb_image']);
-
-        // dd($dataProduct);
-
-        /// insert get id products 
-        // use transaction 
-
-        // try {
-        /// transaction
-        // insert bảng products oke => lấy được id
-
-        // $productId = $this->product->insert($dataProduct);
-
-        // if (!empty($dataProductVariants)) {
-        //     foreach ($dataProductVariants as $item) {
-        //         $item['product_id'] += $productId;
-        //         $this->productVariants->insert($item);
-        //     }
-        // }
-
-        // if(!empty($dataProductTags)){
-        //     foreach($dataProductTags as $tag){
-        //         $tag['product_id'] += $productId
-        //         $this->productTag->insert($item);
-        //     }
-        // }
-
-
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        // }
-
     }
     public function show(string $id)
     {
@@ -198,9 +200,18 @@ class ProductController extends Controller implements CRUDinterfaces
         // .... 
         ##
 
+        $product = $this->product->find($id);
 
-        toastr('success', 'Xóa thành công');
-        return header('location: ' . routeAdmin('products'));
+        if ($product) {
+            $this->product->delete($id);
+
+            $imageOld = $product['thumb_image'];
+
+            delete_image($imageOld);
+
+            toastr('success', 'Xóa thành công');
+            return header('location: ' . routeAdmin('products'));
+        }
     }
 
     public function handle($data)
@@ -211,15 +222,13 @@ class ProductController extends Controller implements CRUDinterfaces
         // Lấy riêng data của tags
         $dataProductTags = $data['tags'] ?? null;
 
-        // Xử lý thô product variants
+        // Lấy riêng data product variants
         $dataProductVariantTmp = $data['product_variants'] ?? null;
         $dataProductVariants = [];
 
-        // Xử lý thô product image
-
-        $dataProductGallery = $_FILES['product_galleries'];
-
-        // 'is_active', 'is_hot_deal', 'is_good_deal', 'is_new', 'is_show_home'
+        // Lấy riêng product galleries 
+        $dataProductGalleryTmp = $_FILES['product_galleries'] ?? null;
+        $dataProductGallerys = [];
 
         // Xử lý slug
         $dataProduct['slug'] = slug($dataProduct['name']);
@@ -237,16 +246,37 @@ class ProductController extends Controller implements CRUDinterfaces
                 $dataProductVariants[] = [
                     'product_color_id' => $key,
                     'quatity' => $item['quantity'],
-                    'price_regular' => $item['price_regular'],
-                    'price_sale' => $item['price_sale'],
-                    'image' => '',
+                    'price_regular' => $item['price_regular'] ?: 0,
+                    'price_sale' => $item['price_sale'] ?: 0,
                     'created_at' => date('Y/m/d H:i:s'),
                     'updated_at' => date('Y/m/d H:i:s'),
                 ];
             }
         }
 
-        return [$dataProduct, $dataProductTags, $dataProductVariants];
+        if ($dataProductGalleryTmp && !empty($dataProductGalleryTmp['name'][0])) {
+            foreach ($dataProductGalleryTmp['name'] as $key => $image) {
+                $file = [
+                    'name' => $image,
+                    'tmp_name' => $dataProductGalleryTmp['tmp_name'][$key]
+                ];
+
+                $uploadFile = upload_file($file, 'product_galleries');
+
+                if ($uploadFile) {
+                    // $dataProductGallerys[] = $uploadFile
+
+                    $dataProductGallerys[] = [
+                        'image' => $uploadFile
+                    ];
+                }
+                ;
+            }
+        }
+
+
+
+        return [$dataProduct, $dataProductTags, $dataProductVariants, $dataProductGallerys];
     }
 
 }

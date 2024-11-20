@@ -154,63 +154,72 @@ if (!function_exists('toastr')) {
     }
 }
 
-// if (!function_exists('upload_file')) {
-//     function upload_file($file, $path = null)
-//     {
-//         $pathBase = $_ENV['PATH_UPLOAD'];
-//         $fileName = '';
-//         $fileTmp = '';
-
-//         if ($path) {
-//             // 
-//             $pathBase .= trim($path, '/') . '/';
-
-//             //
-//             if (!file_exists($pathBase)) {
-//                 mkdir($pathBase, 0777, true);
-//             }
-//         }
-
-//         if (is_array($file)) {
-//             $fileName = $file['name'];
-//             $fileTmp = $file['tmp_name'];
-//         } else {
-//             return false;
-//         }
-
-//         $hasFile = pathinfo($fileName, PATHINFO_EXTENSION);
-
-//         $fileName = uniqid() . '-' . time() . '.' . $hasFile;
-//         // $uploadPath = $pathBase . time() . '-' . basename($file['name']);
-
-//         $uploadPath = $pathBase . $fileName;
-
-
-//         if (move_uploaded_file($fileTmp, $uploadPath)) {
-//             return $uploadPath;
-//         }
-
-//         return false;
-//     }
-// }
-
-
 if (!function_exists('upload_file')) {
-    function upload_file($file)
+    function upload_file($file, $path = null)
     {
-        $imagePath = $_ENV['PATH_UPLOAD'] . uniqid() . '-' . basename($file['name']);
+        $pathBase = $_ENV['PATH_UPLOAD'];
 
-        if (move_uploaded_file($file['tmp_name'], $imagePath)) {
-            return $imagePath;
+        if ($path) {
+            // 
+            $pathBase .= trim($path, '/') . '/';
+
+            //
+            if (!file_exists($pathBase)) {
+                mkdir($pathBase, 0777, true);
+            }
         }
 
-        return null;
+        if (is_array($file)) {
+            $fileName = $file['name'];
+            $fileTmp = $file['tmp_name'];
+        } else {
+            return false;
+        }
+
+        $hasFile = pathinfo($fileName, PATHINFO_EXTENSION);
+
+        $fileName = uniqid() . '-' . time() . '.' . $hasFile;
+        // $uploadPath = $pathBase . time() . '-' . basename($file['name']);
+
+        $uploadPath = $pathBase . $fileName;
+
+
+        if (move_uploaded_file($fileTmp, $uploadPath)) {
+            return $uploadPath;
+        }
+
+        return false;
     }
 }
+
+
+// if (!function_exists('upload_file')) {
+//     function upload_file($file)
+//     {
+//         $imagePath = $_ENV['PATH_UPLOAD'] . uniqid() . '-' . basename($file['name']);
+
+//         if (move_uploaded_file($file['tmp_name'], $imagePath)) {
+//             return $imagePath;
+//         }
+
+//         return null;
+//     }
+// }
 
 if (!function_exists('getImage')) {
     function getImage($file)
     {
         return $_ENV['BASE_URL'] . $file;
+    }
+}
+
+if (!function_exists('delete_image')) {
+    function delete_image($file)
+    {
+        if (!empty($file) && file_exists($file)) {
+            unlink($file);
+        }
+
+        return false;
     }
 }

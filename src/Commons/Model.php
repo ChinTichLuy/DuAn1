@@ -73,7 +73,7 @@ class Model
 		}
 	}
 
-	public function paginate($page = 1, $perPage =  self::PER_PAGE)
+	public function paginate($page = 1, $perPage = self::PER_PAGE)
 	{
 		$queryBuilder = clone ($this->queryBuilder);
 		$totalPage = ceil($this->count() / $perPage);
@@ -112,7 +112,7 @@ class Model
 		return false;
 	}
 
-	public function update($id,	array $data)
+	public function update($id, array $data)
 	{
 		if (!empty($data)) {
 			$query = $this->queryBuilder->update($this->tableName);
@@ -168,6 +168,28 @@ class Model
 	public function __destruct()
 	{
 		$this->connect = null;
+	}
+
+	public function insertGetId(array $data)
+	{
+		if (!empty($data)) {
+			// Tạo truy vấn INSERT
+			$query = $this->queryBuilder->insert($this->tableName);
+
+			$index = 0;
+			foreach ($data as $key => $value) {
+				$query->setValue($key, '?')->setParameter($index, $value);
+				++$index;
+			}
+
+			// Thực thi truy vấn
+			$query->executeQuery();
+
+			// Lấy ID vừa được thêm
+			return $this->connect->lastInsertId();
+		}
+
+		return false;
 	}
 
 
