@@ -44,7 +44,6 @@ class ProductController extends Controller implements CRUDinterfaces
     public function index()
     {
         $products = $this->product->getAll('*');
-
         // dd($products);
 
         return $this->viewAdmin(self::PATH_VIEW . __FUNCTION__, [
@@ -96,45 +95,30 @@ class ProductController extends Controller implements CRUDinterfaces
             // redirect về trang create
             return header('location: ' . routeAdmin('products/create'));
         } else {
+            [$dataProduct, $dataProductTags, $dataProductVariants, $dataProductGallerys] = $this->handle($_POST + $_FILES);
 
-            $data = $_POST + $_FILES;
 
-            [$dataProduct, $dataProductTags, $dataProductVariants, $dataProductGallerys] = $this->handle($data);
+            $productImages = upload_file([
+                'name' => $dataProduct['thumb_image']['name']['thumb_image'],
+                'tmp_name' => $dataProduct['thumb_image']['tmp_name']['thumb_image']
+            ], 'products');
+
+            $dataProduct['thumb_image'] = $productImages ?: null;
+            $dataProduct['price_sale'] = $dataProduct['price_sale'] ?: 0;
 
             $this->connect->beginTransaction();
 
             try {
-                $productImages = upload_file([
-                    'name' => $dataProduct['thumb_image']['name']['thumb_image'],
-                    'tmp_name' => $dataProduct['thumb_image']['tmp_name']['thumb_image']
-                ], 'products');
-
-                $dataProduct['thumb_image'] = $productImages ?: null;
-                $dataProduct['price_sale'] = $dataProduct['price_sale'] ?: 0;
-
-                $imageTest = [];
-
+                ## insert data product 
                 $productId = $this->product->insertGetId($dataProduct);
 
-                // Nếu insert product không thành công
+                ## Nếu insert không thành công thì tạo mã lỗi mới
                 if (!$productId) {
-                    throw new Exception('Insert Product Faild');
+                    throw new Exception('Insert product failed');
                 }
                 ;
 
-                if (!empty($dataProductGallerys)) {
-                    foreach ($dataProductGallerys as $gallery) {
-                        $gallery['product_id'] = $productId;
-                        $imageTest[] = $gallery;
-                    }
-                }
-
-                foreach($imageTest as $value){
-                    $this->productGallery->insert($value);
-                }
-
-                // dd($imageTest);
-
+                ## thêm tag vào db
                 if (!empty($dataProductTags)) {
                     foreach ($dataProductTags as $tag) {
                         $resultTag = $this->productTag->insert([
@@ -143,42 +127,52 @@ class ProductController extends Controller implements CRUDinterfaces
                         ]);
 
                         if (!$resultTag) {
-                            throw new Exception("Insert Tag {$tag} Faild");
+                            throw new Exception("Insert product tag {$tag} failed");
                         }
                     }
                 }
 
+                ## thêm variant vào db
                 if (!empty($dataProductVariants)) {
                     foreach ($dataProductVariants as $variant) {
                         $variant['product_id'] = $productId;
+
                         $resultVariant = $this->productVariants->insert($variant);
 
                         if (!$resultVariant) {
-                            throw new Exception("Insert variant {$resultVariant} Faild");
+                            throw new Exception("Insert product variant {$variant} failed");
                         }
                     }
                 }
 
-                // if (!empty($dataProductGallerys)) {
-                //     foreach ($dataProductGallerys as $gallery) {
-                //         $gallery['product_id'] = $productId;
-                //         $resultGallery = $this->productGallery->insert($gallery);
+                if (!empty($dataProductGallerys)) {
+                    foreach ($dataProductGallerys as $image) {
+                        $image['product_id'] = $productId;
 
-                //         if (!$resultGallery) {
-                //             throw new Exception("Insert gallery {$resultGallery} Faild");
-                //         }
-                //     }
-                // }
+                        $resultGallery = $this->productGallery->insert($image);
+
+                        if (!$resultGallery) {
+                            throw new Exception("Insert product image {$image} failed");
+                        }
+                    }
+                }
 
                 $this->connect->commit();
-
                 toastr('success', 'success');
                 return header('location: ' . routeAdmin('products'));
-
             } catch (\Throwable $th) {
-                $this->connect->rollBack();
-                toastr('error', 'error');
-                die('Error' . $th->getMessage());
+
+                delete_image($dataProduct['thumb_image']);
+
+                
+                if (!empty($dataProductGallerys)) {
+                    foreach ($dataProductGallerys as $image) {
+                        delete_image($image['image']);
+                    }
+                }
+
+
+                die('LuxChill Error: ' . $th->getMessage());
             }
         }
     }
@@ -204,7 +198,6 @@ class ProductController extends Controller implements CRUDinterfaces
 
         if ($product) {
             $this->product->delete($id);
-
             $imageOld = $product['thumb_image'];
 
             delete_image($imageOld);
@@ -230,6 +223,7 @@ class ProductController extends Controller implements CRUDinterfaces
         $dataProductGalleryTmp = $_FILES['product_galleries'] ?? null;
         $dataProductGallerys = [];
 
+
         // Xử lý slug
         $dataProduct['slug'] = slug($dataProduct['name']);
         $dataProduct['is_active'] ??= 0;
@@ -254,6 +248,9 @@ class ProductController extends Controller implements CRUDinterfaces
             }
         }
 
+
+        // Xử lý data product galery
+
         if ($dataProductGalleryTmp && !empty($dataProductGalleryTmp['name'][0])) {
             foreach ($dataProductGalleryTmp['name'] as $key => $image) {
                 $file = [
@@ -261,19 +258,17 @@ class ProductController extends Controller implements CRUDinterfaces
                     'tmp_name' => $dataProductGalleryTmp['tmp_name'][$key]
                 ];
 
+
                 $uploadFile = upload_file($file, 'product_galleries');
 
                 if ($uploadFile) {
-                    // $dataProductGallerys[] = $uploadFile
-
                     $dataProductGallerys[] = [
                         'image' => $uploadFile
                     ];
                 }
-                ;
+
             }
         }
-
 
 
         return [$dataProduct, $dataProductTags, $dataProductVariants, $dataProductGallerys];

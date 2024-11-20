@@ -17,7 +17,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -73,7 +72,7 @@
                                                 width="50px" height="50px">
                                         </td>
                                         <td>
-                                            {{ $product['name'] }}
+                                            {{ limitText($product['name'], 20) }}
                                         </td>
 
                                         <td>

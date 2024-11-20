@@ -173,7 +173,6 @@ class Model
 	public function insertGetId(array $data)
 	{
 		if (!empty($data)) {
-			// Tạo truy vấn INSERT
 			$query = $this->queryBuilder->insert($this->tableName);
 
 			$index = 0;
@@ -182,16 +181,11 @@ class Model
 				++$index;
 			}
 
-			// Thực thi truy vấn
 			$query->executeQuery();
 
-			// Lấy ID vừa được thêm
 			return $this->connect->lastInsertId();
 		}
 
 		return false;
 	}
-
-
-	// public function (){}
 }
