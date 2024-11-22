@@ -18,7 +18,7 @@
 
             @else
             <li class="paginate_button page-item previous" id="customerList-table_previous">
-                <a href="{{ routeAdmin('categories?page=' . $page - 1) }}" aria-controls="customerList-table" aria-disabled="true" role="link" data-dt-idx="previous"
+                <a href="{{ routeAdmin("{$url}" . $page - 1) }}" aria-controls="customerList-table" aria-disabled="true" role="link" data-dt-idx="previous"
                     tabindex="-1" class="page-link">
                     <i class="mdi mdi-chevron-left"></i>
                 </a>
@@ -26,7 +26,7 @@
             @endif
 
             @for($i = 1; $i <= $totalPage; $i++) <li class="paginate_button page-item {{ $page == $i ? "active" : '' }}">
-                <a href="{{ routeAdmin('categories?page=' . $i) }}" aria-controls="customerList-table" class="page-link">
+                <a href="{{ routeAdmin("{$url}" . $i) }}" aria-controls="customerList-table" class="page-link">
                     {{ $i }}
                 </a>
                 </li>
@@ -41,7 +41,7 @@
                 </li>
                 @else
                 <li class="paginate_button page-item" id="customerList-table_next">
-                    <a href="{{ routeAdmin('categories?page=' . ++$page) }}" aria-controls="customerList-table" role="link" data-dt-idx="next" tabindex="0"
+                    <a href="{{ routeAdmin("{$url}" . ++$page) }}" aria-controls="customerList-table" role="link" data-dt-idx="next" tabindex="0"
                         class="page-link">
                         <i class="mdi mdi-chevron-right"></i>
                     </a>

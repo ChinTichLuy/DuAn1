@@ -1,16 +1,15 @@
 @extends('layouts.master')
-@section('title', 'Categories')
+@section('title', 'User')
 @section('content')
 
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Categories</h4>
+                <h4 class="mb-sm-0 font-size-18">Users</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        {{-- <li class="breadcrumb-item"><a href="javascript: void(0);">Categories</a></li> --}}
-                        <li class="breadcrumb-item active">Categories</li>
+                        <li class="breadcrumb-item active">Users</li>
                     </ol>
                 </div>
 
@@ -33,10 +32,10 @@
                         </div>
                         <div class="col-sm-8">
                             <div class="text-sm-end">
-                                <a href="{{ routeAdmin('categories/create') }}"
+                                <a href="{{ routeAdmin('users/create') }}"
                                     class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2 addCustomers-modal">
                                     <i class="mdi mdi-plus me-1"></i>
-                                    New Category
+                                    New Users
                                 </a>
                             </div>
                         </div><!-- end col-->
@@ -47,8 +46,12 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Avatar</th>
                                     <th>Name</th>
-                                    <th>Status</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Is_active</th>
+                                    <th>Role</th>
                                     <th>Created_at</th>
                                     <th>Updated_at</th>
                                     <th>Action</th>
@@ -57,33 +60,58 @@
 
                             <tbody>
 
-                                @foreach ($categories as $category)
+                                @foreach ($users as $user)
                                     <tr>
                                         <td class="dtr-control sorting_1" tabindex="0">
-                                            <div class="d-none">{{ $category['id'] }}</div>
+                                            <div class="d-none">{{ $user['id'] }}</div>
                                             <div class="form-check font-size-16"> <input class="form-check-input"
-                                                    type="checkbox" id="customerlistcheck-{{ $category['id'] }}"> <label
+                                                    type="checkbox" id="customerlistcheck-{{ $user['id'] }}"> <label
                                                     class="form-check-label"
-                                                    for="customerlistcheck-{{ $category['id'] }}"></label> </div>
+                                                    for="customerlistcheck-{{ $user['id'] }}"></label> </div>
                                         </td>
 
                                         <td>
-                                            {{ $category['name'] }}
+                                            @if ($user['avatar'])
+                                                <img src="{{ getImage($user['avatar']) }}" alt="{{ $user['name'] }}"
+                                                    width="50px" height="50px">
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            {{ $user['name'] }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ $user['email'] }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ $user['phone'] }}
                                         </td>
 
                                         <td>
                                             <span
-                                                class="badge font-size-12 p-2 {{ $category['status'] ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $category['status'] ? 'public' : 'pending' }}
+                                                class="badge font-size-12 p-2 {{ $user['is_active'] ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $user['is_active'] ? 'Active' : 'No Active' }}
                                             </span>
                                         </td>
 
                                         <td>
-                                            {{ $category['created_at'] }}
+
+                                            <span
+                                                class="badge font-size-12 p-2 {{ $user['role'] ? 'bg-primary' : 'bg-info' }}">
+                                                {{ $user['role'] ? 'Admin' : 'Member' }}
+                                            </span>
                                         </td>
 
                                         <td>
-                                            {{ $category['updated_at'] }}
+                                            {{ $user['created_at'] }}
+                                        </td>
+
+                                        <td>
+                                            {{ $user['updated_at'] }}
                                         </td>
 
                                         <td>
@@ -94,14 +122,14 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end" style="">
                                                     <li>
-                                                        <a href="{{ routeAdmin('categories/' . $category['id'] . '/edit') }}"
+                                                        <a href="{{ routeAdmin('users/' . $user['id'] . '/edit') }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="mdi mdi-pencil font-size-16 text-success me-1"></i>
                                                             Edit
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ routeAdmin('categories/' . $category['id']) }}"
+                                                        <a href="{{ routeAdmin('users/' . $user['id']) }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="fa-regular fa-eye font-size-16 text-warning me-1"
                                                                 style="color: #FFD43B;"></i>
@@ -109,17 +137,16 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <form
-                                                            action="{{ routeAdmin('categories/' . $category['id'] . '/delete') }}"
-                                                            method="POST" id="category-form-delete-{{ $category['id'] }}">
+                                                        <form action="{{ routeAdmin('users/' . $user['id'] . '/delete') }}"
+                                                            method="POST" id="user-form-delete-{{ $user['id'] }}">
                                                             @csrf
                                                             @method('DELETE')
 
 
                                                             <button type='button' class="dropdown-item remove-list"
-                                                                onclick="handleDelete({{ $category['id'] }})">
+                                                                onclick="handleDelete({{ $user['id'] }})">
                                                                 <i
-                                                                    class="mdi mdi-trash-can font-size-{{ $category['id'] }} text-danger me-1"></i>
+                                                                    class="mdi mdi-trash-can font-size-{{ $user['id'] }} text-danger me-1"></i>
                                                                 Delete
                                                             </button>
                                                         </form>
@@ -133,15 +160,15 @@
                         </table>
                     </div>
 
-                    @if ($page && $totalPage)
-                        <div class="row">
-                            @include('layouts.components.pagination', [
-                                'page' => $page,
-                                'totalPage' => $totalPage,
-                                'url' => "categories?page="
-                            ])
-                        </div>
-                    @endif
+                    {{-- @if ($page && $totalPage)
+                    <div class="row">
+                        @include('layouts.components.pagination', [
+                            'page' => $page,
+                            'totalPage' => $totalPage,
+                            'url' => "categories?page="
+                        ])
+                    </div>
+                @endif --}}
                     <!-- end table responsive -->
                 </div>
                 <!-- end card body -->
@@ -154,5 +181,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/categories/index.js') }}"></script>
+    <script src="{{ asset('js/users/index.js') }}"></script>
 @endsection

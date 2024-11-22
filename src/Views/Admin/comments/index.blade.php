@@ -1,16 +1,15 @@
 @extends('layouts.master')
-@section('title', 'Categories')
+@section('title', 'Comments')
 @section('content')
 
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0 font-size-18">Categories</h4>
+                <h4 class="mb-sm-0 font-size-18">Comments</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        {{-- <li class="breadcrumb-item"><a href="javascript: void(0);">Categories</a></li> --}}
-                        <li class="breadcrumb-item active">Categories</li>
+                        <li class="breadcrumb-item active">Comments</li>
                     </ol>
                 </div>
 
@@ -31,7 +30,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-8">
+                        {{-- <div class="col-sm-8">
                             <div class="text-sm-end">
                                 <a href="{{ routeAdmin('categories/create') }}"
                                     class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2 addCustomers-modal">
@@ -39,7 +38,7 @@
                                     New Category
                                 </a>
                             </div>
-                        </div><!-- end col-->
+                        </div><!-- end col--> --}}
                     </div>
 
                     <div class="table-responsive min-vh-100">
@@ -47,8 +46,9 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
+                                    <th>User Name</th>
+                                    <th>Product Name</th>
+                                    <th>Rating</th>
                                     <th>Created_at</th>
                                     <th>Updated_at</th>
                                     <th>Action</th>
@@ -57,33 +57,35 @@
 
                             <tbody>
 
-                                @foreach ($categories as $category)
+                                @foreach ($comments as $comment)
                                     <tr>
                                         <td class="dtr-control sorting_1" tabindex="0">
-                                            <div class="d-none">{{ $category['id'] }}</div>
+                                            <div class="d-none">{{ $comment['c_id'] }}</div>
                                             <div class="form-check font-size-16"> <input class="form-check-input"
-                                                    type="checkbox" id="customerlistcheck-{{ $category['id'] }}"> <label
+                                                    type="checkbox" id="customerlistcheck-{{ $comment['c_id'] }}"> <label
                                                     class="form-check-label"
-                                                    for="customerlistcheck-{{ $category['id'] }}"></label> </div>
+                                                    for="customerlistcheck-{{ $comment['c_id'] }}"></label> </div>
                                         </td>
 
                                         <td>
-                                            {{ $category['name'] }}
+                                            
+                                            {{ limitText($comment['u_name'], 10) }}
                                         </td>
 
                                         <td>
-                                            <span
-                                                class="badge font-size-12 p-2 {{ $category['status'] ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $category['status'] ? 'public' : 'pending' }}
-                                            </span>
+                                            {{ limitText($comment['p_name']) }}
                                         </td>
 
                                         <td>
-                                            {{ $category['created_at'] }}
+                                            {{ $comment['c_rating'] }}
                                         </td>
 
                                         <td>
-                                            {{ $category['updated_at'] }}
+                                            {{ $comment['c_created_at'] }}
+                                        </td>
+
+                                        <td>
+                                            {{ $comment['c_updated_at'] }}
                                         </td>
 
                                         <td>
@@ -93,22 +95,22 @@
                                                     <i class="mdi mdi-dots-horizontal font-size-18"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end" style="">
-                                                    <li>
+                                                    {{-- <li>
                                                         <a href="{{ routeAdmin('categories/' . $category['id'] . '/edit') }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="mdi mdi-pencil font-size-16 text-success me-1"></i>
                                                             Edit
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li>
-                                                        <a href="{{ routeAdmin('categories/' . $category['id']) }}"
+                                                        <a href="{{ routeAdmin('comments/' . $comment['c_id']) }}"
                                                             class="dropdown-item edit-list">
                                                             <i class="fa-regular fa-eye font-size-16 text-warning me-1"
                                                                 style="color: #FFD43B;"></i>
                                                             Show
                                                         </a>
                                                     </li>
-                                                    <li>
+                                                    {{-- <li>
                                                         <form
                                                             action="{{ routeAdmin('categories/' . $category['id'] . '/delete') }}"
                                                             method="POST" id="category-form-delete-{{ $category['id'] }}">
@@ -123,7 +125,7 @@
                                                                 Delete
                                                             </button>
                                                         </form>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
                                             </div>
                                         </td>
@@ -138,7 +140,7 @@
                             @include('layouts.components.pagination', [
                                 'page' => $page,
                                 'totalPage' => $totalPage,
-                                'url' => "categories?page="
+                                'url' => 'comments?page='
                             ])
                         </div>
                     @endif
@@ -151,8 +153,4 @@
         <!-- end col -->
     </div>
 
-@endsection
-
-@section('script')
-    <script src="{{ asset('js/categories/index.js') }}"></script>
 @endsection

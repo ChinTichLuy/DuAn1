@@ -165,11 +165,6 @@ class Model
 		}
 	}
 
-	public function __destruct()
-	{
-		$this->connect = null;
-	}
-
 	public function insertGetId(array $data)
 	{
 		if (!empty($data)) {
@@ -187,5 +182,10 @@ class Model
 		}
 
 		return false;
+	}
+
+	public function __destruct()
+	{
+		$this->connect = null;
 	}
 }

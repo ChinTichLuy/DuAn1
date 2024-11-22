@@ -225,22 +225,6 @@ if (!function_exists('delete_image')) {
 if (!function_exists('limitText')) {
     function limitText($text, $length = 10)
     {
-        // return strlen($text) > $limit ? substr($text, 0, $limit) . $text2 : $text;
-
-
-        // return strlen($text) > $length;
-
-        // return strlen($text) > $length ? 
-
-        // return substr($text, 0,  15) . '...' : $text;
-        // if (strlen($text) > $length) {
-        //     return substr($text, 0, $length) . '...';
-        // }
-
-        // return $text;
-
-
         return strlen($text) > $length ? substr($text, 0, $length) . '...' : $text;
-
     }
 }

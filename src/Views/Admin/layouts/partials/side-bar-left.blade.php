@@ -64,7 +64,7 @@
             </li>
 
             <li class="#">
-                <a href="#" class="waves-effect #">
+                <a href="{{ routeAdmin('users') }}" class="waves-effect #">
                     <i class="bx bx-user"></i>
                     <span key="t-users">Users</span>
                 </a>
@@ -78,7 +78,7 @@
             </li>
 
             <li class="#">
-                <a href="#" class="waves-effect">
+                <a href="{{ routeAdmin('comments') }}" class="waves-effect">
                     <i class="bx bx-receipt"></i>
                     <span key="t-comments">Comments</span>
                 </a>

@@ -29,7 +29,6 @@ abstract class Controller
     public function viewClient($view, $data = [])
     {
         return $this->renderView($view, $data, 'Client');
-
     }
 
     public function setMessagesValidate()
