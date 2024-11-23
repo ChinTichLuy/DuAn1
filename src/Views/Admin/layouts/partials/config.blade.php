@@ -1,3 +1,3 @@
 <script>
-    console.log('hehe');
+    console.log(' console.log from->(src/Views/Admin/layouts/partials/config.blade.php)');
 </script>

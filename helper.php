@@ -20,8 +20,8 @@ if (!function_exists('routeAdmin')) {
 }
 
 
-if (!function_exists('routeAdmin')) {
-    function routeAdmin($url = null)
+if (!function_exists('routeClient')) {
+    function routeClient($url = null)
     {
         return $_ENV['BASE_URL'] . $url;
     }
