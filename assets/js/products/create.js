@@ -23,18 +23,18 @@ const initSelect2 = () => {
 
 const renderTbodyVariants = (colors)=>{
     let rows = '';
-    colors.map((colors)=>{
-    console.log(colors);
+    colors.map((color)=>{
+        // console.log(colors);
 
-        // rows += 
-        // `
-        // <tr class="text-center">
-        // <td>${color.text}</td>
-        // <td> <input type="tel" name="product_variants[${color.id}][quantity]"/></td>
-        // <td> <input type="tel" name="product_variants[${color.id}][prrice_regular]"/></td>
-        // <td> <input type="tel" name="product_variants[${color.id}][price_sale]"/></td>
-        // </tr>
-        // `;
+        rows += 
+        `
+        <tr class="text-center">
+        <td>${color.text}</td>
+        <td> <input type="tel" name="product_variants[${color.id}][quantity]"/></td>
+        <td> <input type="tel" name="product_variants[${color.id}][prrice_regular]"/></td>
+        <td> <input type="tel" name="product_variants[${color.id}][price_sale]"/></td>
+        </tr>
+        `;
     });
     return rows;
 }
