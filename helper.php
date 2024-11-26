@@ -228,3 +228,12 @@ if (!function_exists('limitText')) {
         return strlen($text) > $length ? substr($text, 0, $length) . '...' : $text;
     }
 }
+
+if (!function_exists('calculateTotalProduct')) {
+    function calculateTotalProduct($data)
+    {
+        return array_reduce($data, function ($total, $item) {
+            return $total + ($item['p_price_sale'] ?: $item['p_price_regular']) * $item['ct_quantity'];
+        }, 0);
+    }
+}

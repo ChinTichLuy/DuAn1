@@ -31,6 +31,9 @@ const handleAddToCart = (productId, variantId, quantity) => {
     success: function (res) {
       console.log(res);
     },
+    error: function (err) {
+      console.error(err);
+    },
   });
 };
 
