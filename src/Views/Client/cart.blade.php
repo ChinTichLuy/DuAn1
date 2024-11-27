@@ -77,7 +77,9 @@
                                                 </span>
                                                 <input class=" form-control data-qty-{{ $product['ct_id'] }} disabled"
                                                     type="text" value="{{ $product['ct_quantity'] }}"
-                                                    style="font-size: 16px" disabled>
+                                                    style="font-size: 16px" disabled
+                                                    data-cart-id="{{ $cart_id }}"
+                                                    >
                                                 <span>
                                                     <button class="btn-remove-qty btn btn-danger"
                                                         data-id="{{ $product['ct_id'] }}">-</button>
@@ -85,7 +87,8 @@
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <span class="subtotal-price sub-price-{{ $product['ct_id'] }}">
+                                            <span class="subtotal-price sub-price-{{ $product['ct_id'] }}"
+                                                data-price='{{ $product['p_price_sale'] ?: $product['p_price_regular'] }}'>
                                                 {{-- {{ calculateProductSubTotal($product['p_price_sale'] ?: $product['p_price_regular'], $product['ct_quantity']) }}đ --}}
 
                                                 {{ formatPrice(($product['p_price_sale'] ?: $product['p_price_regular']) * $product['ct_quantity']) }}đ
@@ -94,70 +97,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
-                                {{-- @foreach ($cart->cartItems as $item)
-                                    @php
-                                        $price =
-                                            $item->productVariant->product->price_sale ?:
-                                            $item->productVariant->product->price_regular;
-                                        $slug = $item->productVariant->product->slug;
-                                        $image = $item->productVariant->product->thumb_image;
-                                        $name = $item->productVariant->product->name;
-                                        $color = $item->productVariant->color->name;
-                                        $size = $item->productVariant->size->name;
-                                    @endphp
-
-                                    <tr class="product-row">
-                                        <td>
-                                            <figure class="product-image-container">
-                                                <a href="{{ route('shop.detail', $slug) }}" class="product-image">
-                                                    @if (!empty($image) && Storage::exists($image))
-                                                        <img src="{{ Storage::url($image) }}" alt="Product">
-                                                    @endif
-                                                </a>
-
-                                                <a href="cart.html#" class="btn-remove icon-cancel"
-                                                    title="Remove Product"></a>
-                                            </figure>
-                                        </td>
-                                        <td class="product-col">
-                                            <h5 class="product-title">
-                                                <a href="{{ route('shop.detail', $slug) }}" target="_blank">
-                                                    {{ limitTextLeng($name, 20) }}
-                                                </a>
-                                            </h5>
-                                        </td>
-                                        <td>
-                                            {{ $color }}
-                                        </td>
-                                        <td>
-                                            {{ $size }}
-                                        </td>
-                                        <td>
-                                            {{ formatPrice($price) }}đ
-                                        </td>
-                                        <td>
-                                            <div class="d-flex" style="width: 160px">
-                                                <span>
-                                                    <button class="btn-add-qty btn btn-success"
-                                                        data-id="{{ $item->id }}">+</button>
-                                                </span>
-                                                <input class=" form-control data-qty-{{ $item->id }} disabled"
-                                                    type="text" value="{{ $item->quantity }}" style="font-size: 16px"
-                                                    disabled>
-                                                <span>
-                                                    <button class="btn-remove-qty btn btn-danger"
-                                                        data-id="{{ $item->id }}">-</button>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <span class="subtotal-price sub-price-{{ $item->id }}">
-                                                {{ calculateProductSubTotal($price, $item->quantity) }}đ
-                                            </span>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
                             </tbody>
 
 

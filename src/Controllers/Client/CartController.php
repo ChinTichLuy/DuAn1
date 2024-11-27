@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Controllers\Client;
 
 use App\Commons\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 
-class CartController extends Controller{
+class CartController extends Controller
+{
 
     private const PATH_VIEW = 'cart';
 
@@ -24,23 +26,24 @@ class CartController extends Controller{
 
         $authenticate = 26;
 
-        if($authenticate == 26){
+        if ($authenticate == 26) {
             $dataCart = $this->cart->findByUserId($authenticate);
 
-            if(!empty($dataCart)){
+            if (!empty($dataCart)) {
                 // Nếu người dùng chưa có giỏ hàng
                 $carts = $this->cartItem->selectInnerJoinProduct($dataCart['id']);
-            }else{
+            } else {
                 $carts = [];
             }
-        }else{
+        } else {
             // Không có người dùng
         }
 
         // dd($carts);
 
         return $this->viewClient(self::PATH_VIEW, [
-            'carts' => $carts
+            'carts' => $carts,
+            'cart_id' => $dataCart['id']
         ]);
     }
 }
