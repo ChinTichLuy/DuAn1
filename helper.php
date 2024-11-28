@@ -136,3 +136,42 @@ if (!function_exists('toastr')) {
         ];
     }
 }
+
+
+
+if(!function_exists('upload_file')){
+    function upload_file($file, $path= null){
+        $pathBase = $_ENV['PATH_UPLOAD'];
+
+        if($path){
+            $pathBase .= trim($path,'/').'/';
+            if(!file_exists($pathBase)){
+             mkdir($pathBase,0777, true);
+            }
+        }
+
+        if(is_array($file)){
+            $fileName = $file['name'];
+            $fileTmp = $file['tmp_name'];
+        }else{
+            return false;
+        }
+
+
+        $hasFile = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = uniqid() . '-' . time() . '.' . $hasFile;
+
+        $uploadPath = $pathBase . $fileName;
+
+        if(move_uploaded_file($fileTmp, $uploadPath)){
+            return $uploadPath;
+        }
+        return false;
+    }
+}
+
+if(!function_exists('getImage')){
+    function getImage($file){
+        return $_ENV['BASE_URL']. $file;
+    }
+}

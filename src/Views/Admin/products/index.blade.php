@@ -47,15 +47,90 @@
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
+                                <th>Image</th>
                                 <th>Name</th>
-                                <th>Status</th>
-                                <th>Created_at</th>
-                                <th>Updated_at</th>
+                                <th>Sku</th>
+                                <th>Category</th>
+                                <th>Price regular</th>
+                                <th>Price sale</th>
                                 <th>Action</th>
+
                             </tr>
                         </thead>
 
                         <tbody>
+                            @foreach($products as $product)
+                                    <tr>
+                                        <td class="dtr-control sorting_1" tabindex="0">
+                                            <div class="d-none">{{ $product['id'] }}</div>
+                                            <div class="form-check font-size-16"> <input class="form-check-input"
+                                                    type="checkbox" id="customerlistcheck-{{ $product['id'] }}"> <label
+                                                    class="form-check-label"
+                                                    for="customerlistcheck-{{ $product['id'] }}"></label> </div>
+                                        </td>
+
+                                        <td>
+                                            <img src="{{ getImage($product['thumb_image'])}}" alt="{{ $product['name'] }}" width="50px" height="50px">
+                                            
+                                        </td>
+                                        <td>
+                                            {{ $product['name'] }}   
+                                        </td>
+                                        <td>
+                                            {{ $product['sku'] }}   
+                                        </td>
+                                        <td>
+                                            1 
+                                        </td>
+                                        <td>
+                                            {{ $product['price_regular'] }}   
+                                        </td>
+                                        <td>
+                                            {{ $product['price_sale'] }}   
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle card-drop" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end" style="">
+                                                    <li>
+                                                        <a href="{{ routeAdmin('products/' . $product['id'] . '/edit') }}"
+                                                            class="dropdown-item edit-list">
+                                                            <i class="mdi mdi-pencil font-size-16 text-success me-1"></i>
+                                                            Edit
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ routeAdmin('products/' . $product['id']) }}"
+                                                            class="dropdown-item edit-list">
+                                                            <i class="fa-regular fa-eye font-size-16 text-warning me-1"
+                                                                style="color: #FFD43B;"></i>
+                                                            Show
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <form
+                                                            action="{{ routeAdmin('products/' . $product['id'] . '/delete') }}"
+                                                            method="POST" id="product-form-delete-{{ $product['id'] }}">
+                                                            @csrf
+                                                            @method('DELETE')
+        
+        
+                                                            <button type='button' class="dropdown-item remove-list"
+                                                                onclick="handleDelete({{ $product['id'] }})">
+                                                                <i
+                                                                    class="mdi mdi-trash-can font-size-{{ $product['id'] }} text-danger me-1"></i>
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>      
+                                    </tr>
+                            @endforeach
 {{-- 
                             @foreach ($categories as $category)
                             <tr>
@@ -146,4 +221,7 @@
     </div>
     <!-- end col -->
 </div>
+@endsection
+@section('script')
+<script src="{{ asset('js/products/index.js') }}"></script>
 @endsection

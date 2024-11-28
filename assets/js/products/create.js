@@ -39,9 +39,33 @@ const renderTbodyVariants = (colors)=>{
     return rows;
 }
 
+const addImageGallery = ()=>{
+    const id = `image-gallery-${Math.random().toString(36).substring(2,15).toLocaleLowerCase()}`;
+    let html = `
+    <div class="col-md-4" id="${id}_item">
+        <label for="gallery_default" class="form-label">Image</label>
+            <div class="d-flex">
+                <input type="file" class="form-control" name="product_galleries[]" id="${id}">
+                <button type="button" class="btn btn-danger" onclick="removeImages('${id}_item')">Delete</button>                           
+            </div>
+    </div>`;
+
+    $("#gallery_list").append(html);
+
+}
+
+
+const removeImages = (id)=>{
+    // $(`#${id}`).remove();
+    showAlertConfirm(()=>{
+    $(`#${id}`).remove();
+
+    });
+}
+
 $(document).ready(function () {
     // goi ham chon nhieu
-    initSelect2();
+    initSelect2(); 
     // $('#select-tag-product-multiple').initSelect2();
     $('#table-product-variant-preview').hide();
     $('#select-color-product-multiple').on("change",() =>{
@@ -54,11 +78,16 @@ $(document).ready(function () {
         }
         else {
             $('#table-product-variant-preview').hide();
+            $('#render-tbody-product').empty();
         }
-           
-        
 
     });
+
+    $('#btn-submit-form-create').click(()=>{
+
+        // submit form
+        $('#form-create-product').submit();
+    })
 
 
 
