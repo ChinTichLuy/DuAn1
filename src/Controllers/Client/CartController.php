@@ -39,8 +39,6 @@ class CartController extends Controller
             // Không có người dùng
         }
 
-        // dd($carts);
-
         return $this->viewClient(self::PATH_VIEW, [
             'carts' => $carts,
             'cart_id' => $dataCart['id']

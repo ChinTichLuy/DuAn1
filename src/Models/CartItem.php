@@ -84,7 +84,7 @@ class CartItem extends Model
                 ->setParameter('cartId', $cartId)
                 ->fetchAllAssociative();
 
-                return $data;
+            return $data;
         } catch (\Throwable $th) {
             die($th->getMessage());
         }
@@ -105,4 +105,17 @@ class CartItem extends Model
     }
 
     public function findCartItemById($id) {}
+
+    public function deleteCartItemByCartId($cartId)
+    {
+        try {
+            return $this->queryBuilder
+                ->delete($this->tableName)
+                ->where('cart_id = :cartId')
+                ->setParameter('cartId', $cartId)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
 }
