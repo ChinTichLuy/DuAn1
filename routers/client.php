@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Api\CategoryController;
 use App\Controllers\Auth\LoginController;
 use App\Controllers\Auth\RegisterController;
 use App\Controllers\Client\CartController;
@@ -47,3 +48,5 @@ $router->post('/comment/add', CommentController::class . '@add');
 $router->get('/ajax/{productId}/{colorId}/findProductVariantByColorId', ShopDetailController::class . '@findProductVariantByColorId');
 $router->post('/ajax/handleAddToCart', ShopDetailController::class . '@handleAddToCart');
 $router->post('/ajax/handleUpdateCart', ShopDetailController::class . '@handleUpdateCart');
+
+$router->get('/ajax/categories', CategoryController::class . '@getAll');

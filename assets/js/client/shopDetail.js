@@ -17,6 +17,11 @@ $(document).ready(function () {
       handleAddToCart(productId, res.product_variant_id.id, productQty);
     });
   });
+
+  // Xử lý categories
+
+  
+
 });
 
 const handleAddToCart = (productId, variantId, quantity) => {

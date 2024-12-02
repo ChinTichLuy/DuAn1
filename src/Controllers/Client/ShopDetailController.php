@@ -40,12 +40,7 @@ class ShopDetailController extends Controller
     {
 
         $product = $this->product->findBySlug($slug);
-
-        if (isset($_SESSION['user'])) {
-            $comments = $this->comment->findByProductId($product['p_id']);
-        }
-
-        // dd($comments);
+        $comments = $this->comment->findByProductId($product['p_id']);
 
         if ($product) {
             $productGalleries = $this->productGallery->findByProductId($product['p_id']);
