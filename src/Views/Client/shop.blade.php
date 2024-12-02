@@ -85,7 +85,7 @@
                                 <figure>
                                     <a href="{{ routeClient('shop/' . $product['p_slug'] . '/detail') }}">
                                         @if ($product['p_thumb_image'] && file_exists($product['p_thumb_image']))
-                                            <img src="{{ $product['p_thumb_image'] }}" alt="" width="50px"
+                                            <img style="height: 200px; width: 200px" src="{{ $product['p_thumb_image'] }}" alt="" width="50px"
                                                 height="50px">
                                         @else
                                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/170px-Laravel.svg.png"

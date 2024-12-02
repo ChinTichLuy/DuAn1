@@ -25,7 +25,7 @@ class ShopController extends Controller
 
         $categorySearch = $_GET['category'] ?? null;
 
-        [$products, $totalPage] = $this->product->getAllShop($page, 1);
+        [$products, $totalPage] = $this->product->getAllShop($page, 20);
 
         $productColors = $this->productColor->getAll('*');
 
