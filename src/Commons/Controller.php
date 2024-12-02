@@ -31,7 +31,7 @@ abstract class Controller
         return $this->renderView($view, $data, 'Client');
     }
 
-    public function setMessagesValidate()
+    protected function setMessagesValidate()
     {
         $this->validator->setMessages([
             'email:email' => 'Email không đúng định dạng 🤬',

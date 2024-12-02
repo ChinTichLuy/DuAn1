@@ -13,7 +13,8 @@
             <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
             <form action="#" method="get">
                 <div class="header-search-wrapper">
-                    <input type="search" class="form-control" name="q" id="q" placeholder="Search..." required>
+                    <input type="search" class="form-control" name="q" id="q" placeholder="Search..."
+                        required>
                     <div class="select-custom">
                         <select id="cat" name="cat">
                             <option value="">All Categories</option>
@@ -51,15 +52,27 @@
             </h6>
         </div>
         {{-- Login --}}
-        @guest
-        <a href="#" class="header-icon" title="Login">
-            <i class="icon-user-2"></i>
-        </a>
+        {{-- @guest
+            <a href="{{ routeClient('auth/login') }}" class="header-icon" title="Login">
+                <i class="icon-user-2"></i>
+            </a>
         @else
-        <a href="#" class="header-icon" title="Nhom 1">
-            <i class="icon-user-2"></i>
-        </a>
-        @endguest
+            <a href="#" class="header-icon" title="Nhom 1">
+                <i class="icon-user-2"></i>
+            </a>
+        @endguest --}}
+
+
+        @if (!empty($_SESSION['user']))
+            <a href="{{ routeClient('account') }}" class="header-icon" title="{{ $_SESSION['user']['name'] }}">
+                <i class="icon-user-2"></i>
+            </a>
+        @else
+            <a href="{{ routeClient('auth/login') }}" class="header-icon" title="Login">
+                <i class="icon-user-2"></i>
+            </a>
+        @endif
+
         <a href="#" class="header-icon" title="Wishlist">
             <i class="icon-wishlist-2"></i>
         </a>
@@ -88,8 +101,8 @@
                             <!-- End .product-details -->
                             <figure class="product-image-container">
                                 <a href="product.html" class="product-image">
-                                    <img src="{{ asset('theme/client/images/products/product-1.jpg') }}"
-                                        alt="product" width="80" height="80">
+                                    <img src="{{ asset('theme/client/images/products/product-1.jpg') }}" alt="product"
+                                        width="80" height="80">
                                 </a>
                                 <a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
                             </figure>

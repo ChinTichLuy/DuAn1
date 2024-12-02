@@ -327,3 +327,10 @@ if (!function_exists('momo')) {
         header('Location: ' . $jsonResult['payUrl']);
     }
 }
+
+if (!function_exists('middleware_private_route')) {
+    function middleware_private_route()
+    {
+        isset($_SESSION['user']) ? header('location: ' . routeClient()) && exit() : null;
+    }
+}
