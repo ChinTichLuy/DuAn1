@@ -22,7 +22,7 @@ class CategoryController extends Controller implements CRUDinterfaces
 
         // select có paginate và deleted_at = 0 / 0 là active 1 là no active thay cho xóa thẳng sẽ gây lỗi hệ thống
         $page = $_GET['page'] ?? 1;
-        $perPage = 1; // số record muốn hiện trên 1 trang
+        $perPage = 10; // số record muốn hiện trên 1 trang
 
         [$categories, $totalPage] = $this->category->paginate($page, $perPage);
 
