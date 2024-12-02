@@ -56,8 +56,7 @@
             <li class="menu-title" key="t-administration">Administration</li>
 
             <li class="#">
-                <a href="{{ routeAdmin('categories') }}"
-                    class="waves-effect #">
+                <a href="{{ routeAdmin('categories') }}" class="waves-effect #">
                     <i class="bx bx-receipt"></i>
                     <span key="t-categories">Categories</span>
                 </a>
@@ -75,6 +74,37 @@
                     <i class="bx bx-receipt"></i>
                     <span key="t-products">Products</span>
                 </a>
+            </li>
+
+            <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-share-alt"></i>
+                    <span key="t-multi-level">Products</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="true">
+                    <li>
+                        <a href="{{ routeAdmin('products') }}" key="t-level-1-1">
+                            Product List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ routeAdmin('product-tags') }}" key="t-level-1-2">
+                            Product Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ routeAdmin('product-colors') }}" key="t-level-1-3">
+                            Product Color
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow" key="t-level-1-2">Biến Thể</a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="#" key="t-level-2-1">Colors</a></li>
+                            <li><a href="#" key="t-level-2-2">Sizes</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
 
             <li class="#">
@@ -123,28 +153,6 @@
             </li>
 
             <li class="menu-title" key="t-messages">Messages</li>
-
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-share-alt"></i>
-                    <span key="t-multi-level">Products</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="true">
-                    <li>
-                        <a href="#" key="t-level-1-1">
-                            Danh Sách Sản Phẩm
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow" key="t-level-1-2">Biến Thể</a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="#" key="t-level-2-1">Colors</a></li>
-                            <li><a href="#" key="t-level-2-2">Sizes</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
 
             <li>
                 <a href="javascript: void(0);" class="has-arrow waves-effect">
