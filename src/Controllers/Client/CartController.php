@@ -26,7 +26,9 @@ class CartController extends Controller
 
         $authenticate = 26;
 
-        if ($authenticate == 26) {
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if ($userId) {
             $dataCart = $this->cart->findByUserId($authenticate);
 
             if (!empty($dataCart)) {
@@ -35,13 +37,20 @@ class CartController extends Controller
             } else {
                 $carts = [];
             }
-        } else {
-            // Không có người dùng
-        }
 
-        return $this->viewClient(self::PATH_VIEW, [
-            'carts' => $carts,
-            'cart_id' => $dataCart['id']
-        ]);
+
+            return $this->viewClient(self::PATH_VIEW, [
+                'carts' => $carts,
+                'cart_id' => $dataCart['id']
+            ]);
+        } else {
+            $carts = $_SESSION['cart'] ?? [];
+
+            // dd($carts);
+
+            return $this->viewClient(self::PATH_VIEW, [
+                'carts' => $carts
+            ]);
+        }
     }
 }

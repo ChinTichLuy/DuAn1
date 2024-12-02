@@ -45,7 +45,7 @@ class ShopDetailController extends Controller
         }
 
 
-        // dd($product);
+        // dd($_SESSION);
 
         return $this->viewClient(self::PATH_VIEW, [
             'product' => $product,
@@ -70,8 +70,11 @@ class ShopDetailController extends Controller
 
         $authenticate = true;
 
+        $userId = $_SESSION['user']['id'] ?? null;
+
         $productVariantId = $_POST['product_variant_id'];
         $productQuantity = $_POST['quantity'];
+        $productId = $_POST['product_id'];
 
         $connect = $this->cart->getConnect();
 
@@ -80,7 +83,7 @@ class ShopDetailController extends Controller
 
         // 26
 
-        if ($authenticate) {
+        if ($userId) {
             // 
             $cart = $this->cart->findByUserId(26);
 
@@ -120,104 +123,73 @@ class ShopDetailController extends Controller
                 'cart_id' => $cartId,
                 'variant_id' => $_POST['product_variant_id']
             ]);
+        } else {
+            ## Nếu chưa có session cart thì tạo
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
 
-            #####
-            // if ($cart) {
-            //     //
+            $product = $this->productVariants->findById($productVariantId);
 
-            //     // nếu người dùng đã có cart thì thêm items or thêm quantity
+            $quantityVariant = $product['v_quatity'];
 
-            //     // Tìm kiếm theo product_variant_id và cart_id rồi mới update
+            if ($quantityVariant == 0) {
+                $message = 'Sản phẩm không có sẵn';
+                header('Content-type: application/json');
+                echo json_encode([
+                    'message' => $message,
+                    'status' => false
+                ]);
+                ## Ngừng chạy câu lệnh bên dưới
+                exit();
+            }
 
+            // format data cần lưu vào session
+            $dataCart = [
+                'p_name' => $product['p_name'],
+                'p_price_regular' => $product['p_price_regular'],
+                'p_price_sale' => $product['p_price_sale'],
+                'p_sku' => $product['p_sku'],
+                'p_slug' => $product['p_slug'],
+                'p_thumb_image' => $product['p_thumb_image'],
+                'pc_id' => $product['pc_id'],
+                'pc_name' => $product['pc_name'],
+                'v_price_regular' => $product['v_price_regular'],
+                'v_product_color_id' => $product['v_product_color_id'],
+                'v_product_id' => $product['v_product_id'],
+                'v_quatity' => $product['v_quatity'],
+                'ct_quantity' => $productQuantity,
+            ];
 
+            if (!isset($_SESSION['cart'][$productVariantId])) {
+                $_SESSION['cart'][$productVariantId] = $dataCart;
+                $count = count($_SESSION['cart']);
+                $message = 'Thêm vào giỏ hàng thành công';
+            } else {
+                $_SESSION['cart'][$productVariantId]['c_quantity'] += $productQuantity;
+                $count = count($_SESSION['cart']);
+                $message = 'Thêm vào giỏ hàng thành công';
+            }
 
-
-            //     // $this->cartItem->update($,[
-            //     //     'cart_id'               => 9,
-            //     //     'product_variant_id'    => $_POST['product_variant_id'],
-            //     //     'quantity'               => $_POST['quantity'],
-            //     //     'created_at'            => date('Y-m-d H:i:s'),
-            //     //     'updated_at'            => date('Y-m-d H:i:s'),
-            //     // ]);
-
-
-
-            //     header('Content-type: application/json');
-            //     echo json_encode([
-            //         'message' => 'Tăng số lượng cart item'
-            //     ]);
-            // } else {
-
-            //     // Nếu chưa tồn tại trong bảng cart thì insert
-
-            //     $cartId = $this->cart->insertGetId([
-            //         'user_id'           => 26,
-            //         'created_at'        => date('Y-m-d H:i:s'),
-            //         'updated_at'        => date('Y-m-d H:i:s'),
-            //     ]);
-
-            //     $this->cartItem->insert([
-            //         'cart_id'               => $cartId,
-            //         'product_variant_id'    => $_POST['product_variant_id'],
-            //         'quantity'               => $_POST['quantity'],
-            //         'created_at'            => date('Y-m-d H:i:s'),
-            //         'updated_at'            => date('Y-m-d H:i:s'),
-            //     ]);
-
-
-            //     header('Content-type: application/json');
-            //     echo json_encode([
-            //         'message' => 'Thêm thành công vào giỏ hàng',
-            //         'data' => $_POST
-            //     ]);
-            // }
-            #####
-
-
-
-
-            // $cart = $this->cart->insertGetId([
-            //     'user_id'           => 26,
-            //     'created_at'        => date('Y-m-d H:i:s'),
-            //     'updated_at'        => date('Y-m-d H:i:s'),
-            // ]);
-
-            // // Nếu mà product_variant_id đã tồn tại trong bảng cart_items thì mình chỉ cộng += quantity
-            // $this->cartItem->insert([
-            //     'cart_id'               => $cart,
-            //     'product_variant_id'    => $_POST['product_variant_id'],
-            //     'quantity'               => $_POST['quantity'],
-            //     'created_at'            => date('Y-m-d H:i:s'),
-            //     'updated_at'            => date('Y-m-d H:i:s'),
-            // ]);
-
-
-
-            // header('Content-type: application/json');
-            // echo json_encode([
-            //     'message' => 'Thêm vào giỏ hàng thành công',
-            //     'status' => true,
-            //     'quantity' => $_POST['quantity'],
-            //     'count' => 1
-            // ]);
-
-
-
-
-
-
+            header('Content-type: application/json');
+            echo json_encode([
+                'message' => 'Thêm vào giỏ hàng thành công',
+                'cart' => $_SESSION['cart'],
+                'post' => $_POST,
+                'products' => $product,
+                'quantity' => $quantityVariant,
+                'status' => true,
+                'count' => $count
+            ]);
         }
-
-
-        // header('Content-type: application/json');
-        // echo json_encode([
-        //     'dataPost' => $_POST
-        // ]);
     }
 
     public function handleUpdateCart()
     {
         $authenticate = 26;
+
+        $userId = $_SESSION['user']['id'] ?? null;
+
         $id = $_POST['cartItemId'];
         $quantity = $_POST['quantity'];
         $price = $_POST['subTotal'];
@@ -225,7 +197,7 @@ class ShopDetailController extends Controller
 
         $dataCart = [];
 
-        if ($authenticate == 26) {
+        if ($userId) {
             $this->cartItem->updateQuantityById($id, $quantity);
 
             $subTotal = $price * $quantity;
@@ -233,16 +205,37 @@ class ShopDetailController extends Controller
             $dataCart = $this->cartItem->selectInnerJoinProduct($cartId);
 
             $priceTotal = calculateTotalProduct($dataCart);
-        }
 
-        header('Content-type: application/json');
-        echo json_encode([
-            'dataPost' => $_POST,
-            'subTotal' => $subTotal,
-            'priceTotal' => $priceTotal,
-            // 'cartId' => $cartId
-            'dataCart' => $dataCart,
-            'id' =>  $id
-        ]);
+
+            header('Content-type: application/json');
+            echo json_encode([
+                'dataPost' => $_POST,
+                'subTotal' => $subTotal,
+                'priceTotal' => $priceTotal,
+                // 'cartId' => $cartId
+                'dataCart' => $dataCart,
+                'id' =>  $id,
+                'status' => true,
+                'userId' => $userId
+            ]);
+
+            exit();
+        } else {
+            $_SESSION['cart'][$id]['ct_quantity'] = $quantity;
+
+            $subTotal = $price * $quantity;
+
+            $priceTotal = calculateTotalProduct($_SESSION['cart']);
+
+
+            header('Content-type: application/json');
+            echo json_encode([
+                'dataPost' => $_POST,
+                'status' => true,
+                'userId' => $userId,
+                'subTotal' => $subTotal,
+                'priceTotal' => $priceTotal,
+            ]);
+        }
     }
 }

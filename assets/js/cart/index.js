@@ -47,12 +47,17 @@ const handleUpdateCart = (id, quantity, subTotal, cartId) => {
       cartId: cartId,
     },
     success: (res) => {
-      toastr.success("Thao tác thành công");
-      $(`.sub-price-${id}`).html(formatPrice(res.subTotal));
-      $("#total-price").html(formatPrice(res.priceTotal));
-      //   $(`.sub-price-${id}`).html(res.subTotal);
-
-      console.log(res);
+      if (res.userId) {
+        toastr.success("Thao tác thành công");
+        $(`.sub-price-${id}`).html(formatPrice(res.subTotal));
+        $("#total-price").html(formatPrice(res.priceTotal));
+        console.log(res);
+      } else {
+        toastr.success("Thao tác thành công");
+        $(`.sub-price-${id}`).html(formatPrice(res.subTotal));
+        $("#total-price").html(formatPrice(res.priceTotal));
+        console.log(res);
+      }
     },
     error: (err) => {
       console.error(err);
