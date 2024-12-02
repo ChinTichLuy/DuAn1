@@ -6,7 +6,7 @@
     <div class="container checkout-container">
         <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
             <li>
-                <a href="#">Shopping Cart</a>
+                <a href="{{ routeClient('cart') }}">Shopping Cart</a>
             </li>
             <li class="active">
                 <a href="#">Checkout</a>
@@ -39,11 +39,9 @@
                                                     <abbr class="required" title="required">*</abbr>
                                                 </label>
                                                 <input type="text" name="user_name" class="form-control"
-                                                    value="#" />
+                                                    value="{{ getOldValue('user_name') }}" />
 
-                                                {{-- @error('user_name') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                <span class="fst-italic text-danger">{{ error('user_email') }}</span>
                                             </div>
                                         </div>
 
@@ -52,10 +50,10 @@
                                                 <label>Email
                                                     <abbr class="required" title="required">*</abbr></label>
                                                 <input type="email" name="user_email" class="form-control"
-                                                    value="" />
-                                                {{-- @error('user_email') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                    value="{{ getOldValue('user_email') }}" />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_email') }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -68,10 +66,10 @@
                                                     <abbr class="required" title="required">*</abbr>
                                                 </label>
                                                 <input type="tel" name="user_phone" class="form-control"
-                                                    value="#" />
-                                                {{-- @error('user_phone') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                    value="{{ getOldValue('user_phone') }}" />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_phone') }}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -80,10 +78,10 @@
                                                 <label>Address
                                                     <abbr class="required" title="required">*</abbr></label>
                                                 <input type="text" name="user_address" class="form-control"
-                                                    value="#" />
-                                                {{-- @error('user_address') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                    value="{{ getOldValue('user_address') }}" />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_address') }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -130,47 +128,6 @@
                                     <input type="text" hidden name="district_main">
                                     <input type="text" hidden name="ward_main">
 
-
-                                    {{-- @foreach ($cart->cartItems as $key => $item)
-                                        @php
-                                            $price =
-                                                $item->productVariant->product->price_sale ?:
-                                                $item->productVariant->product->price_regular;
-                                            $slug = $item->productVariant->product->slug;
-                                            $image = $item->productVariant->product->thumb_image;
-                                            $name = $item->productVariant->product->name;
-                                            $color = $item->productVariant->color->name;
-                                            $size = $item->productVariant->size->name;
-                                            $sku = $item->productVariant->product->sku;
-
-                                        @endphp
-
-                                        <input type="text" hidden name="product[{{ $key }}][product_variant_id]"
-                                            value="{{ $item->product_variant_id }}">
-                                        <input type="text" hidden name="product[{{ $key }}][quantity]"
-                                            value="{{ $item->quantity }}">
-                                        <input type="text" hidden name="product[{{ $key }}][product_name]"
-                                            value="{{ $name }}">
-                                        <input type="text" hidden name="product[{{ $key }}][product_sku]"
-                                            value="{{ $sku }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_img_thumbnail]"
-                                            value="{{ $image }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_price_regular]"
-                                            value="{{ $item->productVariant->product->price_regular }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_price_sale]"
-                                            value="{{ $item->productVariant->product->price_sale }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][variant_size_name]"
-                                            value="{{ $size }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][variant_color_name]"
-                                            value="{{ $color }}">
-                                    @endforeach --}}
-
-
                                     <div class="form-group mb-1">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="create-account" />
@@ -202,79 +159,6 @@
 
                                         </div>
                                     </div>
-
-                                    {{-- <div id="collapseFour" class="collapse">
-                            <div class="shipping-info">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>First name <abbr class="required" title="required">*</abbr></label>
-                                            <input type="text" class="form-control" required />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Last name <abbr class="required" title="required">*</abbr></label>
-                                            <input type="text" class="form-control" required />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Company name (optional)</label>
-                                    <input type="text" class="form-control">
-                                </div>
-
-                                <div class="select-custom">
-                                    <label>Country / Region <span class="required">*</span></label>
-                                    <select name="orderby" class="form-control">
-                                        <option value="" selected="selected">Vanuatu</option>
-                                        <option value="1">Brunei</option>
-                                        <option value="2">Bulgaria</option>
-                                        <option value="3">Burkina Faso</option>
-                                        <option value="4">Burundi</option>
-                                        <option value="5">Cameroon</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group mb-1 pb-2">
-                                    <label>Street address <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text" class="form-control" placeholder="House number and street name" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Apartment, suite, unit, etc. (optional)" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Town / City <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text" class="form-control" required />
-                                </div>
-
-                                <div class="select-custom">
-                                    <label>State / County <abbr class="required" title="required">*</abbr></label>
-                                    <select name="orderby" class="form-control">
-                                        <option value="" selected="selected">NY</option>
-                                        <option value="1">Brunei</option>
-                                        <option value="2">Bulgaria</option>
-                                        <option value="3">Burkina Faso</option>
-                                        <option value="4">Burundi</option>
-                                        <option value="5">Cameroon</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
-                                    <input type="text" class="form-control" required />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="order-comments">Order notes (optional)</label>
-                            <textarea class="form-control" placeholder="Notes about your order, e.g. special notes for delivery." required></textarea>
-                        </div> --}}
                                 </div>
                             </li>
                         </ul>
@@ -334,8 +218,8 @@
 
                                 <div class="form-check">
                                     <div>
-                                        <input class="form-check-input" type="radio" value="0"
-                                            name="payment" checked />
+                                        <input class="form-check-input" type="radio" value="0" name="payment"
+                                            checked />
                                         <label class="form-check-label" for="">
                                             Thanh Toán Nhận Hàng
                                         </label>

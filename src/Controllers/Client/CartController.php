@@ -29,7 +29,7 @@ class CartController extends Controller
         $userId = $_SESSION['user']['id'] ?? null;
 
         if ($userId) {
-            $dataCart = $this->cart->findByUserId($authenticate);
+            $dataCart = $this->cart->findByUserId($userId);
 
             if (!empty($dataCart)) {
                 // Nếu người dùng chưa có giỏ hàng

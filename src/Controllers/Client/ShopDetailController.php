@@ -85,11 +85,11 @@ class ShopDetailController extends Controller
 
         if ($userId) {
             // 
-            $cart = $this->cart->findByUserId(26);
+            $cart = $this->cart->findByUserId($userId);
 
             if (empty($cart)) {
                 $this->cart->insert([
-                    'user_id'       => 26,
+                    'user_id'       => $userId,
                     'created_at'    => date('Y-m-d H:i:s'),
                     'updated_at'    => date('Y-m-d H:i:s'),
                 ]);
