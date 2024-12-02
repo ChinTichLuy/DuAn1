@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Commons\Model;
@@ -27,6 +28,38 @@ class Comment extends Model
             return [$data, $totalPage];
         } catch (Exception $e) {
             die($e->getMessage());
+        }
+    }
+
+    public function findByUserIdAndProductId($userId, $productId)
+    {
+        try {
+            return $this->queryBuilder
+                ->select('*')
+                ->from($this->tableName, 'c')
+                ->innerJoin('c', 'users', 'u', 'c.user_id = u.id')
+                ->where('c.user_id = :userId')
+                ->andWhere('c.product_id = :productId')
+                ->setParameter('userId', $userId)
+                ->setParameter('productId', $productId)
+                ->fetchAllAssociative();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+
+    public function findByProductId($productId)
+    {
+        try {
+            return $this->queryBuilder
+                ->select('*')
+                ->from($this->tableName, 'c')
+                ->innerJoin('c', 'users', 'u', 'c.user_id = u.id')
+                ->where('c.product_id = :productId')
+                ->setParameter('productId', $productId)
+                ->fetchAllAssociative();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
         }
     }
 }

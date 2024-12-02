@@ -4,6 +4,7 @@ use App\Controllers\Auth\LoginController;
 use App\Controllers\Auth\RegisterController;
 use App\Controllers\Client\CartController;
 use App\Controllers\Client\CheckOutController;
+use App\Controllers\Client\CommentController;
 use App\Controllers\Client\HomeController;
 use App\Controllers\Client\ShopController;
 use App\Controllers\Client\ShopDetailController;
@@ -36,6 +37,10 @@ $router->mount('/auth', function () use ($router) {
     // route logout
     $router->get('logout', LoginController::class . '@logout');
 });
+
+// handle comment
+
+$router->post('/comment/add', CommentController::class . '@add');
 
 // json - ajax
 

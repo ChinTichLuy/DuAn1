@@ -271,8 +271,7 @@
                 <li class="nav-item">
                     <a class="nav-link" id="product-tab-reviews" data-toggle="tab" href="#product-reviews-content"
                         role="tab" aria-controls="product-reviews-content" aria-selected="false">Reviews
-                        {{-- ({{ count($comments) }}) --}}
-                        10
+                        ({{ count($comments) }})
                     </a>
                 </li>
             </ul>
@@ -437,56 +436,64 @@
                                 <h1>Chua co comment nao</h1>
                             @endif --}}
 
-                            <div class="comments mb-1">
-                                <figure class="img-thumbnail">
-                                    @if ($product['p_thumb_image'] && file_exists($product['p_thumb_image']))
-                                        <img src="{{ getImage($product['p_thumb_image']) }}" alt=""
-                                            width="80" height="80">
-                                    @else
-                                        <img src="https://laravel.com/img/logomark.min.svg" alt="Default" width="80"
-                                            height="80">
-                                    @endif
-                                </figure>
-                                <div class="comment-block">
-                                    <div class="comment-header">
-                                        <div class="comment-arrow"></div>
-                                        <div class="ratings-container float-sm-right">
-                                            <div class="product-ratings">
-                                                <span class="ratings" style="width:80%"></span>
-                                                <!-- End .ratings -->
-                                                <span class="tooltiptext tooltip-top"></span>
+                            @if (!empty($comments))
+                                @foreach ($comments as $key => $comment)
+                                    <div class="comments mb-1">
+                                        <figure class="img-thumbnail">
+                                            @if ($comment['avatar'] && file_exists($comment['avatar']))
+                                                <img src="{{ getImage($comment['avatar']) }}" alt=""
+                                                    width="70" height="70">
+                                            @else
+                                                <img src="https://laravel.com/img/logomark.min.svg" alt="Default"
+                                                    width="80" height="80">
+                                            @endif
+                                        </figure>
+                                        <div class="comment-block">
+                                            <div class="comment-header">
+                                                <div class="comment-arrow"></div>
+                                                <div class="ratings-container float-sm-right">
+                                                    <div class="product-ratings">
+                                                        <span class="ratings"
+                                                            style="width:{{ calRating($comment['rating']) }}"></span>
+                                                        <!-- End .ratings -->
+                                                        <span class="tooltiptext tooltip-top"></span>
+                                                    </div>
+                                                    <!-- End .product-ratings -->
+                                                </div>
+                                                <span class="comment-by">
+                                                    <strong>{{ $comment['name'] }}</strong>
+                                                    – {{ $comment['created_at'] }}
+                                                </span>
                                             </div>
-                                            <!-- End .product-ratings -->
+                                            <div class="comment-content">
+                                                <p>
+                                                    {{ $comment['content'] }}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <span class="comment-by">
-                                            <strong>LuxChill</strong>
-                                            – 25/11/2024
-                                        </span>
                                     </div>
-                                    <div class="comment-content">
-                                        <p>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sint expedita quisquam
-                                            suscipit quos cum voluptatum dolorem quaerat, perspiciatis maxime omnis mollitia
-                                            corrupti temporibus blanditiis ex. Aut corporis quisquam aliquam expedita?
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                                @endforeach
+                            @else
+                                <h1>Chưa có comment nào</h1>
+                            @endif
 
                         </div>
                         <div class="divider"></div>
                         <div class="add-product-review">
-                            <h3 class="review-title">Add a review</h3>
-
                             @php
-                                $isAuth = true;
+                                $isAuth = $_SESSION['user'] ?? null;
                             @endphp
 
+                            {{-- <h3 class="review-title">Add a review</h3> --}}
+
                             @if ($isAuth)
-                                <form action="#" method="POST" enctype="multipart/form-data"
-                                    class="comment-form m-0">
+                                <h3 class="review-title">Add a review</h3>
+
+                                <form action="{{ routeClient('comment/add') }}" method="POST"
+                                    enctype="multipart/form-data" class="comment-form m-0">
                                     @csrf
                                     <input type="tel" hidden value="{{ $product['p_id'] }}" name="product_id">
+                                    <input type="text" hidden value="{{ $product['p_slug'] }}" name="product_slug">
                                     <div class="rating-form">
                                         <label for="rating">Your rating <span class="required">*</span></label>
                                         <span class="rating-stars">
@@ -514,6 +521,11 @@
                                     <!-- End .form-group -->
                                     <input type="submit" class="btn btn-primary" value="Submit">
                                 </form>
+                            @else
+                                <h1>
+                                    Vui lòng login để comment
+                                    <a href="{{ routeClient('auth/login') }}">Login</a>
+                                </h1>
                             @endif
                         </div>
                         <!-- End .add-product-review -->

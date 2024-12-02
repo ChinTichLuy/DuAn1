@@ -345,3 +345,18 @@ if (!function_exists('generateOrderCode')) {
         return $prefix . $time . $randomString;
     }
 }
+
+// Tính rating
+if (!function_exists('calRating')) {
+    function calRating($rating)
+    {
+        return match ($rating) {
+            5 => '100%',
+            4 => '80%',
+            3 => '60%',
+            2 => '40%',
+            1 => '20%',
+            0 => '0%'
+        };
+    }
+}

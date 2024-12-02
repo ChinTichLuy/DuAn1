@@ -5,6 +5,7 @@ namespace App\Controllers\Client;
 use App\Commons\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\ProductGallery;
 use App\Models\ProductTag;
@@ -22,6 +23,7 @@ class ShopDetailController extends Controller
 
     private Cart $cart;
     private CartItem $cartItem;
+    private Comment $comment;
 
     public function __construct()
     {
@@ -31,12 +33,19 @@ class ShopDetailController extends Controller
         $this->productVariants = new ProductVariants();
         $this->cart = new Cart();
         $this->cartItem = new CartItem();
+        $this->comment = new Comment();
     }
 
     public function index($slug)
     {
 
         $product = $this->product->findBySlug($slug);
+
+        if (isset($_SESSION['user'])) {
+            $comments = $this->comment->findByProductId($product['p_id']);
+        }
+
+        // dd($comments);
 
         if ($product) {
             $productGalleries = $this->productGallery->findByProductId($product['p_id']);
@@ -52,6 +61,7 @@ class ShopDetailController extends Controller
             'productGalleries' => $productGalleries,
             'productTags' => $productTags,
             'productVariants' => $productVariants,
+            'comments' => $comments
         ]);
     }
 
