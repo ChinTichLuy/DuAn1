@@ -32,11 +32,12 @@ class CartController extends Controller
             $dataCart = $this->cart->findByUserId($userId);
 
             if (!empty($dataCart)) {
-                // Nếu người dùng chưa có giỏ hàng
                 $carts = $this->cartItem->selectInnerJoinProduct($dataCart['id']);
             } else {
                 $carts = [];
             }
+
+            // dd($carts);
 
 
             return $this->viewClient(self::PATH_VIEW, [

@@ -365,7 +365,7 @@ if (!function_exists('calRating')) {
 if (!function_exists('middleware_auth')) {
     function middleware_auth()
     {
-        if (!$_SESSION['user'] && $_SESSION['user']['role'] != 1) {
+        if (!$_SESSION['user'] || $_SESSION['user']['role'] != 1) {
             header('location: ' . routeClient());
             exit();
         }
