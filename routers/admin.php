@@ -3,6 +3,7 @@
 use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
+use App\Controllers\Admin\ProductColorController;
 use App\Controllers\Admin\ProductController;
 use App\Controllers\Admin\UserController;
 
@@ -50,5 +51,15 @@ $router->mount('/admin',function() use ($router){
         $router->post('/{id}/update', UserController::class . '@update');
         $router->post('/{id}/delete', UserController::class . '@delete');
         $router->get('/{id}', UserController::class . '@show');
+    });
+
+    $router->mount('/product-colors', function () use ($router) {
+        $router->get('/', ProductColorController::class . '@index');
+        $router->get('/create', ProductColorController::class . '@create');
+        $router->post('/store', ProductColorController::class . '@store');
+        // $router->get('/{id}/edit', ProductTagController::class . '@edit');
+        // $router->post('/{id}/update', ProductTagController::class . '@update');
+        // $router->post('/{id}/delete', ProductTagController::class . '@delete');
+        // $router->get('/{id}', ProductTagController::class . '@show');
     });
 });
