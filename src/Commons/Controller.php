@@ -47,6 +47,15 @@ abstract class Controller{
 			// 'phone:digits' => 'Phone Phải là số và 10 kí tự 🤬'
 			// categories
 			'name:required' => 'Vui long nhap name category 🤬',
+
+            'product.name:required' => 'Trường name bắt buộc nhập',
+            'product.name:max' => 'Nhập quá giới hạn quy định',
+            'product.thumb_image:uploaded_file' => 'Quá khích thước, không đúng định dạng',
+            'product.price_regular:required' => 'Trường giá gốc bắt buộc phải nhập',
+            'product.price_regular:numeric' => 'Trường giá gốc bắt buộc phải là số',
+            'product.price_sale:numeric' => 'Trường giá giảm giá gốc bắt buộc phải là số',
+            'product.sku:required' => 'Trường sku bắt buộc phải nhập',
+            'product.category_id:required' => 'Trường category bắt buộc phải nhập',
 		]);
     }
 }

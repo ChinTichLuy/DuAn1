@@ -99,9 +99,26 @@ if (!function_exists('formatPrice')) {
 if (!function_exists('error')) {
     function error($field)
     {
-        if (!empty($_SESSION['errors']) && !empty($_SESSION['errors'][$field])) {
-            return $_SESSION['errors'][$field];
+        // if (!empty($_SESSION['errors']) && !empty($_SESSION['errors'][$field])) {
+        //     return $_SESSION['errors'][$field];
+        // }
+
+
+        if (!empty($_SESSION['errors'])) {
+            // Chuyển `product[name]` thành `product.name` để duyệt chính xác
+            $keys = explode('.', str_replace(['[', ']'], ['.', ''], $field));
+
+            // Bắt đầu từ mảng lỗi gốc
+            $current = $_SESSION['errors'];
+            foreach ($keys as $key) {
+                if (!isset($current[$key])) {
+                    return null; // Không tìm thấy lỗi
+                }
+                $current = $current[$key];
+            }
+            return $current; // Trả về lỗi cuối cùng
         }
+        return null;
     }
 }
 
@@ -137,41 +154,220 @@ if (!function_exists('toastr')) {
     }
 }
 
-
-
-if(!function_exists('upload_file')){
-    function upload_file($file, $path= null){
+if (!function_exists('upload_file')) {
+    function upload_file($file, $path = null)
+    {
         $pathBase = $_ENV['PATH_UPLOAD'];
 
-        if($path){
-            $pathBase .= trim($path,'/').'/';
-            if(!file_exists($pathBase)){
-             mkdir($pathBase,0777, true);
+        if ($path) {
+            // 
+            $pathBase .= trim($path, '/') . '/';
+
+            //
+            if (!file_exists($pathBase)) {
+                mkdir($pathBase, 0777, true);
             }
         }
 
-        if(is_array($file)){
+        if (is_array($file)) {
             $fileName = $file['name'];
             $fileTmp = $file['tmp_name'];
-        }else{
+        } else {
             return false;
         }
 
-
         $hasFile = pathinfo($fileName, PATHINFO_EXTENSION);
+
         $fileName = uniqid() . '-' . time() . '.' . $hasFile;
+        // $uploadPath = $pathBase . time() . '-' . basename($file['name']);
 
         $uploadPath = $pathBase . $fileName;
 
-        if(move_uploaded_file($fileTmp, $uploadPath)){
+
+        if (move_uploaded_file($fileTmp, $uploadPath)) {
             return $uploadPath;
         }
+
         return false;
     }
 }
 
-if(!function_exists('getImage')){
-    function getImage($file){
-        return $_ENV['BASE_URL']. $file;
+
+// if (!function_exists('upload_file')) {
+//     function upload_file($file)
+//     {
+//         $imagePath = $_ENV['PATH_UPLOAD'] . uniqid() . '-' . basename($file['name']);
+
+//         if (move_uploaded_file($file['tmp_name'], $imagePath)) {
+//             return $imagePath;
+//         }
+
+//         return null;
+//     }
+// }
+
+if (!function_exists('getImage')) {
+    function getImage($file)
+    {
+        return $_ENV['BASE_URL'] . $file;
+    }
+}
+
+if (!function_exists('delete_image')) {
+    function delete_image($file)
+    {
+        if (!empty($file) && file_exists($file)) {
+            unlink($file);
+        }
+    }
+}
+
+if (!function_exists('limitText')) {
+    function limitText($text, $length = 10)
+    {
+        return strlen($text) > $length ? substr($text, 0, $length) . '...' : $text;
+    }
+}
+
+if (!function_exists('calculateTotalProduct')) {
+    function calculateTotalProduct($data)
+    {
+        return array_reduce($data, function ($total, $item) {
+            return $total + ($item['p_price_sale'] ?: $item['p_price_regular']) * $item['ct_quantity'];
+        }, 0);
+    }
+}
+
+if (!function_exists('calculateSubTotal')) {
+    function calculateSubTotal($price, $quantity)
+    {
+        return formatPrice($price * $quantity) . 'đ';
+    }
+}
+
+// handle momo
+
+if (!function_exists('execPostRequest')) {
+    function execPostRequest($url, $data)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
+        );
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        //execute post
+        $result = curl_exec($ch);
+        //close connection
+        curl_close($ch);
+        return $result;
+    }
+}
+
+if (!function_exists('momo')) {
+    function momo($price)
+    {
+        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+        $partnerCode = 'MOMOBKUN20180529';
+        $accessKey = 'klm05TvNBzhg7h7j';
+        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+        $orderInfo = "Thanh toán qua MoMo";
+        $amount = $price;
+        $orderId = rand(00, 9999);
+        $redirectUrl = $_ENV['BASE_URL'] . 'checkout/momo';
+        $ipnUrl = $_ENV['BASE_URL'] . 'checkout/momo';
+        $extraData = "";
+
+        // $partnerCode = $partnerCode;
+        // $accessKey = $accessKey;
+        // $serectkey = $secretKey;
+        // $orderId = $orderId; // Mã đơn hàng
+        // $orderInfo = $orderInfo;
+        // $amount = $amount;
+        // $ipnUrl = $ipnUrl;
+        // $redirectUrl = $redirectUrl;
+        // $extraData = $extraData;
+
+        $requestId = time() . "";
+        $requestType = "payWithATM";
+        // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
+        //before sign HMAC SHA256 signature
+        $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+        $data = array(
+            'partnerCode' => $partnerCode,
+            'partnerName' => "Test",
+            "storeId" => "MomoTestStore",
+            'requestId' => $requestId,
+            'amount' => $amount,
+            'orderId' => $orderId,
+            'orderInfo' => $orderInfo,
+            'redirectUrl' => $redirectUrl,
+            'ipnUrl' => $ipnUrl,
+            'lang' => 'vi',
+            'extraData' => $extraData,
+            'requestType' => $requestType,
+            'signature' => $signature
+        );
+        $result = execPostRequest($endpoint, json_encode($data));
+        $jsonResult = json_decode($result, true);  // decode json
+
+        //Just a example, please check more in there
+        // setcookie("title_confirm", "Đặt hàng thành công", time() + 1);
+        // setcookie("subTitle_confirm", "Đã gửi mail xác nhận đơn hàng", time() + 1);
+        header('Location: ' . $jsonResult['payUrl']);
+    }
+}
+
+if (!function_exists('middleware_private_route')) {
+    function middleware_private_route()
+    {
+        isset($_SESSION['user']) ? header('location: ' . routeClient()) && exit() : null;
+    }
+}
+
+## function helper tạo mã order_code unique
+
+if (!function_exists('generateOrderCode')) {
+    function generateOrderCode($prefix = '#nhom1_', $length = 10)
+    {
+        $time = time();
+        $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
+        return $prefix . $time . $randomString;
+    }
+}
+
+// Tính rating
+if (!function_exists('calRating')) {
+    function calRating($rating)
+    {
+        return match ($rating) {
+            5 => '100%',
+            4 => '80%',
+            3 => '60%',
+            2 => '40%',
+            1 => '20%',
+            0 => '0%'
+        };
+    }
+}
+
+// 
+if (!function_exists('middleware_auth')) {
+    function middleware_auth()
+    {
+        if (!$_SESSION['user'] || $_SESSION['user']['role'] != 1) {
+            header('location: ' . routeClient());
+            exit();
+        }
     }
 }
