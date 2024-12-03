@@ -47,8 +47,9 @@ class CartItem extends Model{
     }
     public function selectInnerJoinProduct($cartId)
     {
+        $query  = clone ($this->queryBuilder);
         try {
-            return $this->queryBuilder
+            $data = $query
                 ->select(
                     'ct.id as ct_id',
                     'ct.product_variant_id as ct_product_variant_id',
@@ -71,11 +72,26 @@ class CartItem extends Model{
                 ->innerJoin('ct', 'product_variants', 'v', 'ct.product_variant_id = v.id')
                 ->innerJoin('v', 'product_colors', 'pc', 'v.product_color_id = pc.id')
                 ->innerJoin('v', 'products', 'p', 'v.product_id = p.id')
-                ->where('ct.cart_id = ?')
-                ->setParameter(0, $cartId)
+                ->where('ct.cart_id = :cartId')
+                ->setParameter('cartId', $cartId)
                 ->fetchAllAssociative();
+                return $data;
         } catch (\Throwable $th) {
             //throw $th;
+            die($th->getMessage());
         }
     }
+    public function updateQuantityById($id, $quantity)
+    {
+        try {
+            $query = $this->queryBuilder->update($this->tableName);
+            $query
+                ->set('quantity', ':quantity')->setParameter('quantity', $quantity)
+                ->where('id = :id')->setParameter('id', $id)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+    public function findCartItemById($id) {}
 }

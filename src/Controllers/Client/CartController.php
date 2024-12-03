@@ -28,7 +28,8 @@ class CartController extends Controller{
         }
         // dd($carts);
         return $this->viewClient(self::PATH_VIEW, [
-            'carts' => $carts
+            'carts' => $carts,
+            'cart_id' => $dataCart['id']
         ]);
     }
 }

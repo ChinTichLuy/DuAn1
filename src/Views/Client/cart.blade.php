@@ -68,7 +68,7 @@
                                                 </span>
                                                 <input class=" form-control data-qty-{{ $product['ct_id'] }} disabled"
                                                     type="text" value="{{ $product['ct_quantity'] }}"
-                                                    style="font-size: 16px" disabled>
+                                                    style="font-size: 16px" disabled data-cart-id="{{ $cart_id }}">
                                                 <span>
                                                     <button class="btn-remove-qty btn btn-danger"
                                                         data-id="{{ $product['ct_id'] }}">-</button>
@@ -76,7 +76,8 @@
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <span class="subtotal-price sub-price-{{ $product['ct_id'] }}">
+                                            <span class="subtotal-price sub-price-{{ $product['ct_id'] }}"
+                                                data-price='{{ $product['p_price_sale'] ?: $product['p_price_regular'] }}'>
                                                 {{-- {{ calculateProductSubTotal($product['p_price_sale'] ?: $product['p_price_regular'], $product['ct_quantity']) }}đ --}}
                                                 {{ formatPrice(($product['p_price_sale'] ?: $product['p_price_regular']) * $product['ct_quantity']) }}đ
                                             </span>

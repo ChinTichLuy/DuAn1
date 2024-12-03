@@ -15,10 +15,13 @@ const showAlertConfirm = (callback) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Xác Nhận",
-    cancelButtonText: "Hủy"
+    cancelButtonText: "Hủy",
   }).then((result) => {
     if (result.isConfirmed) {
       callback();
     }
   });
+  const formatPrice = (price) => {
+    return `${price.toLocaleString("en")}đ`;
+  };
 };
