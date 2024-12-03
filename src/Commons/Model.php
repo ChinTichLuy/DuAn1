@@ -40,6 +40,7 @@ class Model
 			return $this->queryBuilder
 				->select(...$columns)
 				->from($this->tableName)
+				->orderBy('id', 'DESC')
 				->fetchAllAssociative();
 		} catch (Exception $e) {
 			die("Err" . $e->getMessage());
@@ -162,6 +163,25 @@ class Model
 		} catch (\Throwable $th) {
 			die($th->getMessage());
 		}
+	}
+
+	public function insertGetId(array $data)
+	{
+		if (!empty($data)) {
+			$query = $this->queryBuilder->insert($this->tableName);
+
+			$index = 0;
+			foreach ($data as $key => $value) {
+				$query->setValue($key, '?')->setParameter($index, $value);
+				++$index;
+			}
+
+			$query->executeQuery();
+
+			return $this->connect->lastInsertId();
+		}
+
+		return false;
 	}
 
 	public function __destruct()
