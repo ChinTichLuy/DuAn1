@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Admin\CategoryController;
+use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
 use App\Controllers\Admin\ProductController;
 
@@ -30,9 +31,13 @@ $router->mount('/admin',function() use ($router){
         $router->get('/{id}', ProductController::class . '@show');
     });
 
-    // $router->mount('/products', function() use ($router){
-    //     $router->get('/',function(){
-
-    //     });
-    // });
+    $router->mount('/comments', function() use ($router){
+        $router->get('/', CommentController::class . '@index');
+        $router->get('/create', CommentController::class . '@create');
+        $router->post('/store', CommentController::class . '@store');
+        $router->get('/{id}/edit', CommentController::class . '@edit');
+        $router->post('/{id}/update', CommentController::class . '@update');
+        $router->post('/{id}/delete', CommentController::class . '@delete');
+        $router->get('/{id}', CommentController::class . '@show');
+    });
 });
