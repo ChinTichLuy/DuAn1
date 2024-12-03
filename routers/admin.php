@@ -4,6 +4,7 @@ use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
 use App\Controllers\Admin\ProductController;
+use App\Controllers\Admin\UserController;
 
 $router->mount('/admin',function() use ($router){
 
@@ -39,5 +40,15 @@ $router->mount('/admin',function() use ($router){
         $router->post('/{id}/update', CommentController::class . '@update');
         $router->post('/{id}/delete', CommentController::class . '@delete');
         $router->get('/{id}', CommentController::class . '@show');
+    });
+
+    $router->mount('/users', function() use ($router){
+        $router->get('/', UserController::class . '@index');
+        $router->get('/create', UserController::class . '@create');
+        $router->post('/store', UserController::class . '@store');
+        $router->get('/{id}/edit', UserController::class . '@edit');
+        $router->post('/{id}/update', UserController::class . '@update');
+        $router->post('/{id}/delete', UserController::class . '@delete');
+        $router->get('/{id}', UserController::class . '@show');
     });
 });
