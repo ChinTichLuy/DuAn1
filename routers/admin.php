@@ -5,6 +5,7 @@ use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
 use App\Controllers\Admin\ProductColorController;
 use App\Controllers\Admin\ProductController;
+use App\Controllers\Admin\ProductTagController;
 use App\Controllers\Admin\UserController;
 
 $router->mount('/admin',function() use ($router){
@@ -57,6 +58,16 @@ $router->mount('/admin',function() use ($router){
         $router->get('/', ProductColorController::class . '@index');
         $router->get('/create', ProductColorController::class . '@create');
         $router->post('/store', ProductColorController::class . '@store');
+        // $router->get('/{id}/edit', ProductTagController::class . '@edit');
+        // $router->post('/{id}/update', ProductTagController::class . '@update');
+        // $router->post('/{id}/delete', ProductTagController::class . '@delete');
+        // $router->get('/{id}', ProductTagController::class . '@show');
+    });
+
+    $router->mount('/product-tags', function () use ($router) {
+        $router->get('/', ProductTagController::class . '@index');
+        $router->get('/create', ProductTagController::class . '@create');
+        $router->post('/store', ProductTagController::class . '@store');
         // $router->get('/{id}/edit', ProductTagController::class . '@edit');
         // $router->post('/{id}/update', ProductTagController::class . '@update');
         // $router->post('/{id}/delete', ProductTagController::class . '@delete');
