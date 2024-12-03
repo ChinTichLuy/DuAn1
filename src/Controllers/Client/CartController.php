@@ -33,8 +33,10 @@ class CartController extends Controller
 
             if (!empty($dataCart)) {
                 $carts = $this->cartItem->selectInnerJoinProduct($dataCart['id']);
+                $cartId = $dataCart['id'];
             } else {
                 $carts = [];
+                $cartId = null;
             }
 
             // dd($carts);
@@ -42,7 +44,7 @@ class CartController extends Controller
 
             return $this->viewClient(self::PATH_VIEW, [
                 'carts' => $carts,
-                'cart_id' => $dataCart['id']
+                'cart_id' => $cartId
             ]);
         } else {
             $carts = $_SESSION['cart'] ?? [];

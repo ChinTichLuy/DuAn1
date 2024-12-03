@@ -389,7 +389,7 @@ class CheckOutController extends Controller
             exit();
         }
 
-        $cart = $this->cart->findByUserId($authenTication);
+        $cart = $this->cart->findByUserId($userId);
         // $data = $this->cartItem->selectInnerJoinProduct($cart['id']);
 
         // dd($data);
@@ -402,7 +402,7 @@ class CheckOutController extends Controller
         $connect = $this->order->getConnect();
 
         $this->order->insert([
-            'user_id' => $authenTication,
+            'user_id' => $userId,
             'user_name' => 'nguoi dung 1',
             'user_email' => 'nguoidung1@gmail.com',
             'user_phone' => '0367253666',
@@ -435,6 +435,9 @@ class CheckOutController extends Controller
 
         $this->cartItem->deleteCartItemByCartId($cart['id']);
         unset($_SESSION['data_checkout']);
+        toastr('success', 'Cảm ơn bạn đã mua hàng');
+        header('location: ' . routeClient('cart'));
+        exit();
     }
 
     ## create order

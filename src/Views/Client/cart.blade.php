@@ -43,12 +43,8 @@
                                                 <figure class="product-image-container">
                                                     <a href="{{ routeClient('shop/' . $product['p_slug'] . '/detail') }}"
                                                         class="product-image">
-                                                        {{-- @if (!empty($image) && Storage::exists($image))
-                                                    <img src="{{ Storage::url($image) }}" alt="Product">
-                                                @endif --}}
-
                                                         @if ($product['p_thumb_image'] && file_exists($product['p_thumb_image']))
-                                                            <img src="{{ getImage($product['p_thumb_image']) }}"
+                                                            <img style="height: 100px; width: 100px" src="{{ getImage($product['p_thumb_image']) }}"
                                                                 alt="Product">
                                                         @endif
 
