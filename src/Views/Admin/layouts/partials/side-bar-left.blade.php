@@ -27,11 +27,28 @@
                 </a>
             </li>
 
-            <li class="#">
-                <a href="{{ routeAdmin('products') }}" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-products">Products</span>
+            <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-share-alt"></i>
+                    <span key="t-multi-level">Products</span>
                 </a>
+                <ul class="sub-menu" aria-expanded="true">
+                    <li>
+                        <a href="{{ routeAdmin('products') }}" key="t-level-1-1">
+                            Product List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ routeAdmin('product-tags') }}" key="t-level-1-2">
+                            Product Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ routeAdmin('product-colors') }}" key="t-level-1-3">
+                            Product Color
+                        </a>
+                    </li>
+                </ul>
             </li>
 
             <li class="#">
@@ -48,20 +65,6 @@
                 </a>
             </li>
 
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-flash-sale">Flash Sale</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-coupons">Coupons</span>
-                </a>
-            </li>
-
             <li class="menu-title" key="t-settings">Settings</li>
 
             <li>
@@ -70,68 +73,6 @@
                     <span key="t-banner">Banner</span>
                 </a>
             </li>
-
-
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-menu">Menu</span>
-                </a>
-            </li>
-
-            <li class="menu-title" key="t-messages">Messages</li>
-
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-share-alt"></i>
-                    <span key="t-multi-level">Products</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="true">
-                    <li>
-                        <a href="#" key="t-level-1-1">
-                            Danh Sách Sản Phẩm
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow" key="t-level-1-2">Biến Thể</a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="#" key="t-level-2-1">Colors</a></li>
-                            <li><a href="#" key="t-level-2-2">Sizes</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-map"></i>
-                    <span key="t-maps">Products</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="maps-google.html" key="t-g-maps">Colors</a></li>
-                    <li><a href="maps-vector.html" key="t-v-maps">Vector Maps</a></li>
-                    <li><a href="maps-leaflet.html" key="t-l-maps">Leaflet Maps</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-share-alt"></i>
-                    <span key="t-multi-level">Multi Level</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="true">
-                    <li><a href="javascript: void(0);" key="t-level-1-1">Level 1.1</a></li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow" key="t-level-1-2">Level 1.2</a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);" key="t-level-2-1">Level 2.1</a></li>
-                            <li><a href="javascript: void(0);" key="t-level-2-2">Level 2.2</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
         </ul>
     </div>
     <!-- Sidebar -->
