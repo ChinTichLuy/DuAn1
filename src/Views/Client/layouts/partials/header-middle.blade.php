@@ -286,7 +286,7 @@
                     </div>
                     <!-- End .dropdown-cart-total -->
                     <div class="dropdown-cart-action">
-                        <a href="#" class="btn btn-gray btn-block view-cart">View
+                        <a href="{{ routeClient('cart') }}" class="btn btn-gray btn-block view-cart">View
                             Cart</a>
                         <a href="#" class="btn btn-dark btn-block">Checkout</a>
                     </div>
