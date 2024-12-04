@@ -52,10 +52,50 @@ class ShopDetailController extends Controller
     {
         // co nguoi dung
         $authenticate = true;
+
+        $productVariantId = $_POST['product_variant_id'];
+        $productQuantity = $_POST['quantity'];
+        $connect = $this->cart->getConnect();
+        $countCart = 0;
         // 26
         if ($authenticate) {
             $cart = $this->cart->findByUserId(26);
             if ($cart) {
+                if (empty($cart)) {
+                    $this->cart->insert([
+                        'user_id'       => 26,
+                        'created_at'    => date('Y-m-d H:i:s'),
+                        'updated_at'    => date('Y-m-d H:i:s'),
+                    ]);
+                }
+                $cartId = $cart['id'] ?? $connect->lastInsertId();
+                $checkCartItem = $this->cartItem->findByCartIdAndProductId($cartId, $productVariantId);
+
+                if (empty($checkCartItem)) {
+                    $this->cartItem->insert([
+                        'cart_id' => $cartId,
+                        'product_variant_id' => $productVariantId,
+                        'quantity' => $productQuantity,
+                        'created_at'    => date('Y-m-d H:i:s'),
+                        'updated_at'    => date('Y-m-d H:i:s'),
+                    ]);
+                } else {
+                    $newQuantity = $checkCartItem['quantity'] + $productQuantity;
+                    $this->cartItem->updateQuantityByCartIdAndProductVariantId($cartId, $productVariantId, $newQuantity);
+                }
+
+                $countCart = $this->cartItem->getCount($cartId);
+
+                header('Content-type: application/json');
+            echo json_encode([
+                'message' => 'Thêm vào giỏ hàng thành công',
+                'count' => $countCart,
+                'status' => true,
+                // check data
+                'quantity' => $_POST['quantity'],
+                'cart_id' => $cartId,
+                'variant_id' => $_POST['product_variant_id']
+            ]);
                 //
                 // nếu người dùng đã có cart thì thêm items or thêm quantity
                 // Tìm kiếm theo product_variant_id và cart_id rồi mới update
@@ -67,29 +107,29 @@ class ShopDetailController extends Controller
                 //     'created_at'            => date('Y-m-d H:i:s'),
                 //     'updated_at'            => date('Y-m-d H:i:s'),
                 // ]);
-                header('Content-type: application/json');
-                echo json_encode([
-                    'message' => 'Tăng số lượng cart item'
-                ]);
-            } else {
-                // Nếu chưa tồn tại trong bảng cart thì insert
-                $cartId = $this->cart->insertGetId([
-                    'user_id'           => 26,
-                    'created_at'        => date('Y-m-d H:i:s'),
-                    'updated_at'        => date('Y-m-d H:i:s'),
-                ]);
-                $this->cartItem->insert([
-                    'cart_id'               => $cartId,
-                    'product_variant_id'    => $_POST['product_variant_id'],
-                    'quantity'               => $_POST['quantity'],
-                    'created_at'            => date('Y-m-d H:i:s'),
-                    'updated_at'            => date('Y-m-d H:i:s'),
-                ]);
-                header('Content-type: application/json');
-                echo json_encode([
-                    'message' => 'Thêm thành công vào giỏ hàng',
-                    'data' => $_POST
-                ]);
+            //     header('Content-type: application/json');
+            //     echo json_encode([
+            //         'message' => 'Tăng số lượng cart item'
+            //     ]);
+            // } else {
+            //     // Nếu chưa tồn tại trong bảng cart thì insert
+            //     $cartId = $this->cart->insertGetId([
+            //         'user_id'           => 26,
+            //         'created_at'        => date('Y-m-d H:i:s'),
+            //         'updated_at'        => date('Y-m-d H:i:s'),
+            //     ]);
+            //     $this->cartItem->insert([
+            //         'cart_id'               => $cartId,
+            //         'product_variant_id'    => $_POST['product_variant_id'],
+            //         'quantity'               => $_POST['quantity'],
+            //         'created_at'            => date('Y-m-d H:i:s'),
+            //         'updated_at'            => date('Y-m-d H:i:s'),
+            //     ]);
+            //     header('Content-type: application/json');
+            //     echo json_encode([
+            //         'message' => 'Thêm thành công vào giỏ hàng',
+            //         'data' => $_POST
+            //     ]);
             }
             // $cart = $this->cart->insertGetId([
             //     'user_id'           => 26,
@@ -116,5 +156,36 @@ class ShopDetailController extends Controller
         // echo json_encode([
         //     'dataPost' => $_POST
         // ]);
+    }
+    public function handleUpdateCart()
+    {
+        $authenticate = 26;
+
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        $id = $_POST['cartItemId'];
+        $quantity = $_POST['quantity'];
+        $price = $_POST['subTotal'];
+        $cartId =  $_POST['cartId'];
+
+        
+        $dataCart = [];
+        if ($authenticate == 26) {
+            $this->cartItem->updateQuantityById($id, $quantity);
+            $subTotal = $price * $quantity;
+            $dataCart = $this->cartItem->selectInnerJoinProduct($cartId);
+            $priceTotal = calculateTotalProduct($dataCart);
+
+            header('Content-type: application/json');
+            echo json_encode([
+                'dataPost' => $_POST,
+                'subTotal' => $subTotal,
+                'priceTotal' => $priceTotal,
+                'dataCart' => $dataCart,
+                'id' =>  $id
+            ]);
+
+            exit();
+        }
     }
 }

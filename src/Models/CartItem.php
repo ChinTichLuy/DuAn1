@@ -1,8 +1,57 @@
 <?php
+
 namespace App\Models;
+
 use App\Commons\Model;
-class CartItem extends Model{
+
+class CartItem extends Model
+{
     protected string $tableName = 'cart_items';
+
+    public function findByCartIdAndProductId($cartId, $productId)
+    {
+        try {
+            return $this->queryBuilder
+                ->select('*')
+                ->from($this->tableName)
+                ->where('cart_id = :cartId')
+                ->andWhere('product_variant_id = :productId')
+                ->setParameter('cartId', $cartId)
+                ->setParameter('productId', $productId)
+                ->fetchAssociative();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+
+    public function updateQuantityByCartIdAndProductVariantId($cartId, $variantId, $quantity)
+    {
+        try {
+            $query = $this->queryBuilder->update($this->tableName);
+
+            $query
+                ->set('quantity', '?')->setParameter(0, $quantity)
+                ->where('cart_id = ?')->setParameter(1, $cartId)
+                ->andWhere('product_variant_id = ?')->setParameter(2, $variantId)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+
+    public function getCount($cartId)
+    {
+        try {
+            return $this->queryBuilder
+                ->select('COUNT(*)')
+                ->from($this->tableName)
+                ->where('cart_id = :cartId')
+                ->setParameter('cartId', $cartId)
+                ->fetchOne();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 
     public function selectInnerJoinProduct($cartId)
     {
@@ -40,6 +89,22 @@ class CartItem extends Model{
             die($th->getMessage());
         }
     }
+
+    public function updateQuantityById($id, $quantity)
+    {
+        try {
+            $query = $this->queryBuilder->update($this->tableName);
+
+            $query
+                ->set('quantity', ':quantity')->setParameter('quantity', $quantity)
+                ->where('id = :id')->setParameter('id', $id)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+
+    public function findCartItemById($id) {}
 
     public function deleteCartItemByCartId($cartId)
     {
