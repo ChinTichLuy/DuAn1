@@ -338,7 +338,7 @@ if (!function_exists('middleware_private_route')) {
 ## function helper tạo mã order_code unique
 
 if (!function_exists('generateOrderCode')) {
-    function generateOrderCode($prefix = '#nhom1_', $length = 10)
+    function generateOrderCode($prefix = 'nhom1_', $length = 10)
     {
         $time = time();
         $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
@@ -369,5 +369,53 @@ if (!function_exists('middleware_auth')) {
             header('location: ' . routeClient());
             exit();
         }
+    }
+}
+
+if (!function_exists('middleware_isAuth')) {
+    function middleware_isAuth()
+    {
+        if (!$_SESSION['user']) {
+            header('location: ' . routeClient());
+            exit();
+        }
+    }
+}
+// function match class và trạng thái đơn hàng / thanh toán
+if (!function_exists('matchStatusOrderClass')) {
+    function matchStatusOrderClass($status)
+    {
+        return match ($status) {
+            'pending' => 'bg-warning text-white',
+            'confirmed' => 'bg-primary text-white',
+            'preparing_goods' => 'bg-info text-white',
+            'shipping' => 'bg-secondary text-white',
+            'delivered' => 'bg-success text-white',
+            'canceled' => 'bg-danger text-white',
+        };
+    }
+}
+
+if (!function_exists('matchStatusOrder')) {
+    function matchStatusOrder($status)
+    {
+        return match ($status) {
+            'pending' => 'Chờ xác nhận',
+            'confirmed' => 'Đã xác nhận',
+            'preparing_goods' => 'Đang chuẩn bị hàng',
+            'shipping' => 'Đang vận chuyển',
+            'delivered' => 'Đã giao hàng',
+            'canceled' => 'Đơn hàng đã bị hủy',
+        };
+    }
+}
+
+if (!function_exists('matchStatusPayMent')) {
+    function matchStatusPayMent($status)
+    {
+        return match ($status) {
+            'unpaid' => "Chưa thanh toán",
+            'paid' => "Đã thanh toán"
+        };
     }
 }

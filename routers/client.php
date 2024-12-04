@@ -3,6 +3,7 @@
 use App\Controllers\Api\CategoryController;
 use App\Controllers\Auth\LoginController;
 use App\Controllers\Auth\RegisterController;
+use App\Controllers\Client\AccountController;
 use App\Controllers\Client\CartController;
 use App\Controllers\Client\CheckOutController;
 use App\Controllers\Client\CommentController;
@@ -42,6 +43,17 @@ $router->mount('/auth', function () use ($router) {
 // handle comment
 
 $router->post('/comment/add', CommentController::class . '@add');
+
+// account
+
+$router->mount('/account', function () use ($router) {
+    $router->get('/', AccountController::class . '@index');
+    $router->get('/orders', AccountController::class . '@orders');
+    $router->get('/order-detail/{id}', AccountController::class . '@orderDetail');
+    // $router->get('/', AccountController::class . '@index');
+    // $router->get('/', AccountController::class . '@index');
+    // $router->get('/', AccountController::class . '@index');
+});
 
 // json - ajax
 

@@ -114,37 +114,38 @@ class CheckOutController extends Controller
 
                     ## Code trước khi tối ưu
 
-                    // $connect = $this->order->getConnect();
+                    $connect = $this->order->getConnect();
 
-                    // $this->order->insert([
-                    //     'user_id' => $authenTication,
-                    //     'user_name' => $_POST['user_name'],
-                    //     'user_email' => $_POST['user_email'],
-                    //     'user_phone' => $_POST['user_phone'],
-                    //     'user_address' => $_POST['user_address'],
-                    //     'user_note' => $_POST['user_note'],
-                    //     'total_price' => $total,
-                    //     'created_at' => date('Y-m-d H:i:s'),
-                    //     'updated_at' => date('Y-m-d H:i:s'),
-                    // ]);
+                    $this->order->insert([
+                        'order_code' => generateOrderCode(),
+                        'user_id' => $userId,
+                        'user_name' => $_POST['user_name'],
+                        'user_email' => $_POST['user_email'],
+                        'user_phone' => $_POST['user_phone'],
+                        'user_address' => $_POST['user_address'],
+                        'user_note' => $_POST['user_note'],
+                        'total_price' => $total,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
 
-                    // $orderId = $connect->lastInsertId();
+                    $orderId = $connect->lastInsertId();
 
-                    // foreach ($data as $product) {
-                    //     $this->orderItem->insert([
-                    //         'order_id' => $orderId,
-                    //         'product_variant_id' => $product['ct_product_variant_id'],
-                    //         'quatity' => $product['ct_quantity'],
-                    //         'product_name' => $product['p_name'],
-                    //         'product_sku' => $product['p_sku'],
-                    //         'product_thumb_image' => $product['p_thumb_image'],
-                    //         'product_price_regular' => $product['p_price_regular'],
-                    //         'product_price_sale' => $product['p_price_sale'],
-                    //         'variant_color_name' => $product['pc_name'],
-                    //         'created_at' => date('Y-m-d H:i:s'),
-                    //         'updated_at' => date('Y-m-d H:i:s'),
-                    //     ]);
-                    // }
+                    foreach ($data as $product) {
+                        $this->orderItem->insert([
+                            'order_id' => $orderId,
+                            'product_variant_id' => $product['ct_product_variant_id'],
+                            'quatity' => $product['ct_quantity'],
+                            'product_name' => $product['p_name'],
+                            'product_sku' => $product['p_sku'],
+                            'product_thumb_image' => $product['p_thumb_image'],
+                            'product_price_regular' => $product['p_price_regular'],
+                            'product_price_sale' => $product['p_price_sale'],
+                            'variant_color_name' => $product['pc_name'],
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                    }
 
                     // if ($authenTication == 26) {
                     //     $this->cartItem->deleteCartItemByCartId($cart['id']);
@@ -154,9 +155,9 @@ class CheckOutController extends Controller
 
                     // Start Tối Ưu
 
-                    $orderId = $this->createOrder($userId, $_POST, $total);
+                    // $orderId = $this->createOrder($userId, $_POST, $total);
 
-                    $this->createOrderItem($orderId, $data);
+                    // $this->createOrderItem($orderId, $data);
 
                     $this->cartItem->deleteCartItemByCartId($cart['id']);
 
@@ -186,35 +187,37 @@ class CheckOutController extends Controller
 
                 $userId = $connect->lastInsertId();
 
-                $orderId = $this->createOrder($userId, $_POST, $total);
+                // $orderId = $this->createOrder($userId, $_POST, $total);
+
                 // $this->createOrderItem($orderId, $data);
 
                 ## @Logic truoc khi tối ưu
                 // // Lấy connect của order
-                // $connect = $this->order->getConnect();
+                $connect = $this->order->getConnect();
 
                 // /**
                 //  * Dựa vào userId mới insert vào bảng user
                 //  * Thêm data vào bảng order
                 //  */
 
-                // $this->order->insert([
-                //     'user_id' => $userId,
-                //     'user_name' => $_POST['user_name'],
-                //     'user_email' => $_POST['user_email'],
-                //     'user_phone' => $_POST['user_phone'],
-                //     'user_address' => $_POST['user_address'],
-                //     'user_note' => $_POST['user_note'] ?? null,
-                //     'total_price' => $total,
-                //     'created_at' => date('Y-m-d H:i:s'),
-                //     'updated_at' => date('Y-m-d H:i:s'),
-                // ]);
+                $this->order->insert([
+                    'order_code' => generateOrderCode(),
+                    'user_id' => $userId,
+                    'user_name' => $_POST['user_name'],
+                    'user_email' => $_POST['user_email'],
+                    'user_phone' => $_POST['user_phone'],
+                    'user_address' => $_POST['user_address'],
+                    'user_note' => $_POST['user_note'] ?? null,
+                    'total_price' => $total,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
 
                 // /**
                 //  * Lấy connect của order
                 //  */
 
-                // $orderId = $connect->lastInsertId();
+                $orderId = $connect->lastInsertId();
 
                 // /**
                 //  * Sau khi lấy được orderId thì insert data product vào bảng order_items
@@ -295,6 +298,7 @@ class CheckOutController extends Controller
             $connect = $this->order->getConnect();
 
             $this->order->insert([
+                'order_code' => generateOrderCode(),
                 'user_id' => $userId,
                 'user_name' => $_SESSION['data_checkout']['post']['user_name'],
                 'user_email' => $_SESSION['data_checkout']['post']['user_email'],
@@ -402,16 +406,31 @@ class CheckOutController extends Controller
         $connect = $this->order->getConnect();
 
         $this->order->insert([
+            'order_code' => generateOrderCode(),
             'user_id' => $userId,
-            'user_name' => 'nguoi dung 1',
-            'user_email' => 'nguoidung1@gmail.com',
-            'user_phone' => '0367253666',
-            'user_address' => 'Hoài Đức - Hà Nội',
-            'user_note' => 'Nếu không thấy nghe máy. Vui lòng gọi sdt 0367253666',
-            'total_price' => $_SESSION['data_checkout']['total'],
-            'created_at' => date('Y/m/d H:i:s'),
-            'updated_at' => date('Y/m/d H:i:s'),
+            'user_name' => $_SESSION['data_checkout']['post']['user_name'],
+            'user_email' => $_SESSION['data_checkout']['post']['user_email'],
+            'user_phone' => $_SESSION['data_checkout']['post']['user_phone'],
+            'user_address' => $_SESSION['data_checkout']['post']['user_address'],
+            'user_note' => $_SESSION['data_checkout']['post']['user_note'] ?? null,
+            'status_payment' => 'paid',
+            'total_price' => $_SESSION['data_checkout']['post']['total_price'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
+
+
+        // $this->order->insert([
+        //     'user_id' => $userId,
+        //     'user_name' => 'nguoi dung 1',
+        //     'user_email' => 'nguoidung1@gmail.com',
+        //     'user_phone' => '0367253666',
+        //     'user_address' => 'Hoài Đức - Hà Nội',
+        //     'user_note' => 'Nếu không thấy nghe máy. Vui lòng gọi sdt 0367253666',
+        //     'total_price' => $_SESSION['data_checkout']['total'],
+        //     'created_at' => date('Y/m/d H:i:s'),
+        //     'updated_at' => date('Y/m/d H:i:s'),
+        // ]);
 
         $orderId = $connect->lastInsertId();
 
