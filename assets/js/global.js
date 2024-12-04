@@ -22,3 +22,18 @@ const showAlertConfirm = (callback) => {
     }
   });
 };
+
+
+
+
+
+
+// config toastr
+toastr.options = {
+  progressBar: true,
+  timeOut: 5000,
+  closeButton: true,
+  positionClass: "toast-top-center",
+  newestOnTop: true,
+  preventDuplicates: true,
+};
