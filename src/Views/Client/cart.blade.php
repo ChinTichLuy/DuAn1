@@ -200,7 +200,7 @@
                             </tfoot>
                         </table>
                         <div class="checkout-methods">
-                            <a href="#" class="btn btn-block btn-dark">
+                            <a href="{{ routeClient('checkout')}}" class="btn btn-block btn-dark">
                                 Proceed to Checkout
                                 <i class="fa fa-arrow-right"></i>
                             </a>
