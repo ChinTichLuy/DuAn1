@@ -61,8 +61,10 @@
     {{-- script global --}}
     @include('layouts.partials.global')
     @include('layouts.partials.script')
+    @include('layouts.components.toastr')
     {{-- script local --}}
     @yield('script')
+    {{ unsetSession() }}
 </body>
 
 </html>

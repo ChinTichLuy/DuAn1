@@ -21,7 +21,17 @@ const showAlertConfirm = (callback) => {
       callback();
     }
   });
-  const formatPrice = (price) => {
-    return `${price.toLocaleString("en")}đ`;
-  };
+};
+
+const formatPrice = (price) => {
+  return `${price.toLocaleString("en")}đ`;
+};
+
+toastr.options = {
+  progressBar: true,
+  timeOut: 5000,
+  closeButton: true,
+  positionClass: "toast-top-center",
+  newestOnTop: true,
+  preventDuplicates: true,
 };

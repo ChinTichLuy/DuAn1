@@ -1,7 +1,11 @@
 <?php
+
 namespace App\Models;
+
 use App\Commons\Model;
-class CartItem extends Model{
+
+class CartItem extends Model
+{
     protected string $tableName = 'cart_items';
 
     public function findByCartIdAndProductId($cartId, $productId)
@@ -19,10 +23,12 @@ class CartItem extends Model{
             die($th->getMessage());
         }
     }
+
     public function updateQuantityByCartIdAndProductVariantId($cartId, $variantId, $quantity)
     {
         try {
             $query = $this->queryBuilder->update($this->tableName);
+
             $query
                 ->set('quantity', '?')->setParameter(0, $quantity)
                 ->where('cart_id = ?')->setParameter(1, $cartId)
@@ -32,6 +38,7 @@ class CartItem extends Model{
             die($th->getMessage());
         }
     }
+
     public function getCount($cartId)
     {
         try {
@@ -45,6 +52,7 @@ class CartItem extends Model{
             //throw $th;
         }
     }
+
     public function selectInnerJoinProduct($cartId)
     {
         $query  = clone ($this->queryBuilder);
@@ -75,16 +83,18 @@ class CartItem extends Model{
                 ->where('ct.cart_id = :cartId')
                 ->setParameter('cartId', $cartId)
                 ->fetchAllAssociative();
-                return $data;
+
+            return $data;
         } catch (\Throwable $th) {
-            //throw $th;
             die($th->getMessage());
         }
     }
+
     public function updateQuantityById($id, $quantity)
     {
         try {
             $query = $this->queryBuilder->update($this->tableName);
+
             $query
                 ->set('quantity', ':quantity')->setParameter('quantity', $quantity)
                 ->where('id = :id')->setParameter('id', $id)
@@ -93,5 +103,19 @@ class CartItem extends Model{
             die($th->getMessage());
         }
     }
+
     public function findCartItemById($id) {}
+
+    public function deleteCartItemByCartId($cartId)
+    {
+        try {
+            return $this->queryBuilder
+                ->delete($this->tableName)
+                ->where('cart_id = :cartId')
+                ->setParameter('cartId', $cartId)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
 }

@@ -160,25 +160,32 @@ class ShopDetailController extends Controller
     public function handleUpdateCart()
     {
         $authenticate = 26;
+
+        $userId = $_SESSION['user']['id'] ?? null;
+
         $id = $_POST['cartItemId'];
         $quantity = $_POST['quantity'];
         $price = $_POST['subTotal'];
         $cartId =  $_POST['cartId'];
+
+        
         $dataCart = [];
         if ($authenticate == 26) {
             $this->cartItem->updateQuantityById($id, $quantity);
             $subTotal = $price * $quantity;
             $dataCart = $this->cartItem->selectInnerJoinProduct($cartId);
             $priceTotal = calculateTotalProduct($dataCart);
+
+            header('Content-type: application/json');
+            echo json_encode([
+                'dataPost' => $_POST,
+                'subTotal' => $subTotal,
+                'priceTotal' => $priceTotal,
+                'dataCart' => $dataCart,
+                'id' =>  $id
+            ]);
+
+            exit();
         }
-        header('Content-type: application/json');
-        echo json_encode([
-            'dataPost' => $_POST,
-            'subTotal' => $subTotal,
-            'priceTotal' => $priceTotal,
-            // 'cartId' => $cartId
-            'dataCart' => $dataCart,
-            'id' =>  $id
-        ]);
     }
 }
