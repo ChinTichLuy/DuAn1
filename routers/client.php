@@ -29,19 +29,19 @@ $router->mount('/checkout', function () use ($router) {
 // handle authentication
 
 $router->mount('/auth', function () use ($router) {
-    $router->get('/login', LoginController::class . '@showFormLogin');
-    $router->post('/login', LoginController::class . '@login');
-    // handle register user
-    $router->get('/register', RegisterController::class . '@showFormRegister');
-    $router->post('/register', RegisterController::class . '@register');
+    // $router->get('/login', LoginController::class . '@showFormLogin');
+    // $router->post('/login', LoginController::class . '@login');
+    // // handle register user
+    // $router->get('/register', RegisterController::class . '@showFormRegister');
+    // $router->post('/register', RegisterController::class . '@register');
 
-    // route logout
-    $router->get('logout', LoginController::class . '@logout');
+    // // route logout
+    // $router->get('logout', LoginController::class . '@logout');
 });
 
 // handle comment
 
-$router->post('/comment/add', CommentController::class . '@add');
+// $router->post('/comment/add', CommentController::class . '@add');
 
 // json - ajax
 
@@ -49,4 +49,4 @@ $router->get('/ajax/{productId}/{colorId}/findProductVariantByColorId', ShopDeta
 $router->post('/ajax/handleAddToCart', ShopDetailController::class . '@handleAddToCart');
 $router->post('/ajax/handleUpdateCart', ShopDetailController::class . '@handleUpdateCart');
 
-$router->get('/ajax/categories', CategoryController::class . '@getAll');
+// $router->get('/ajax/categories', CategoryController::class . '@getAll');
