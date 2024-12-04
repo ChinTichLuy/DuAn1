@@ -8,31 +8,26 @@
             <a href="demo4.html#">Links</a>
             <div class="header-menu">
                 <ul>
-                    @php
-                        $auth = true;
-                    @endphp
-                    @if ($auth)
+                    @if (!empty($_SESSION['user']))
                         <li>
                             <a href="#">Account</a>
                         </li>
                         <div>
                             <li>
-                                <a href="#"
-                                    onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">Logout</a>
+                                <a href="#">Logout</a>
                             </li>
                             <form id="logout-form" action="#" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </div>
                     @else
+                        <li>
+                            <a href="#">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">Register</a>
+                        </li>
                     @endif
-                    <li>
-                        <a href="#">Login</a>
-                    </li>
-                    <li>
-                        <a href="#">Register</a>
-                    </li>
                 </ul>
             </div>
             <!-- End .header-menu -->
