@@ -388,3 +388,42 @@ if (!function_exists('middleware_private_for_admin')) {
     }
     }
 }
+
+// function match class và trạng thái đơn hàng / thanh toán
+if (!function_exists('matchStatusOrderClass')) {
+    function matchStatusOrderClass($status)
+    {
+        return match ($status) {
+            'pending' => 'bg-warning text-white',
+            'confirmed' => 'bg-primary text-white',
+            'preparing_goods' => 'bg-info text-white',
+            'shipping' => 'bg-secondary text-white',
+            'delivered' => 'bg-success text-white',
+            'canceled' => 'bg-danger text-white',
+        };
+    }
+}
+
+if (!function_exists('matchStatusOrder')) {
+    function matchStatusOrder($status)
+    {
+        return match ($status) {
+            'pending' => 'Chờ xác nhận',
+            'confirmed' => 'Đã xác nhận',
+            'preparing_goods' => 'Đang chuẩn bị hàng',
+            'shipping' => 'Đang vận chuyển',
+            'delivered' => 'Đã giao hàng',
+            'canceled' => 'Đơn hàng đã bị hủy',
+        };
+    }
+}
+
+if (!function_exists('matchStatusPayMent')) {
+    function matchStatusPayMent($status)
+    {
+        return match ($status) {
+            'unpaid' => "Chưa thanh toán",
+            'paid' => "Đã thanh toán"
+        };
+    }
+}
