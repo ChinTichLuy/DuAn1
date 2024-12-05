@@ -44,4 +44,55 @@ class Order extends Model
             die($th->getMessage());
         }
     }
+
+    public function selectAndGetCount()
+    {
+        try {
+            $query = clone ($this->queryBuilder);
+
+            $data = $query
+                ->select(
+                    'o.id as o_id',
+                    'o.order_code as o_order_code',
+                    'o.user_id as o_user_id',
+                    'o.user_name as o_user_name',
+                    'o.user_email as o_user_email',
+                    'o.user_phone as o_user_phone',
+                    'o.user_address as o_user_address',
+                    'o.user_note as o_user_note',
+                    'o.ship_user_name as o_ship_user_name',
+                    'o.ship_user_email as o_ship_user_email',
+                    'o.ship_user_phone as o_ship_user_phone',
+                    'o.ship_user_address as o_ship_user_address',
+                    'o.ship_user_note as o_ship_user_note',
+                    'o.is_same_buyer as o_is_same_buyer',
+                    'o.status_order as o_status_order',
+                    'o.status_payment as o_status_payment',
+                    'o.total_price as o_total_price',
+                    'o.created_at as o_created_at',
+                    'COUNT(o.id) as oi_count_record'
+                )
+                ->from($this->tableName, 'o')
+                ->innerJoin('o', 'order_items', 'oi', 'o.id = oi.order_id')
+                ->groupBy('o.id')
+                ->fetchAllAssociative();
+            return $data;
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
+
+    public function updateStatusOrder($id, $status)
+    {
+        try {
+            $query = $this->queryBuilder->update($this->tableName);
+
+            $query
+                ->set('status_order', ':statusOrder')->setParameter('statusOrder', $status)
+                ->where('id = :id', $id)->setParameter('id', $id)
+                ->executeQuery();
+        } catch (\Throwable $th) {
+            die($th->getMessage());
+        }
+    }
 }

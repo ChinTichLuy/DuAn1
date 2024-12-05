@@ -108,7 +108,7 @@
             </li>
 
             <li>
-                <a href="#" class="waves-effect">
+                <a href="{{ routeAdmin('orders') }}" class="waves-effect">
                     <i class="bx bx-receipt"></i>
                     <span key="t-orders">Orders</span>
                 </a>

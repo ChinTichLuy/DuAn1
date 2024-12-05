@@ -3,6 +3,7 @@
 use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
+use App\Controllers\Admin\OrderController;
 use App\Controllers\Admin\ProductColorController;
 use App\Controllers\Admin\ProductController;
 use App\Controllers\Admin\ProductTagController;
@@ -78,5 +79,16 @@ $router->mount('/admin', function () use ($router) {
         // $router->post('/{id}/update', ProductTagController::class . '@update');
         // $router->post('/{id}/delete', ProductTagController::class . '@delete');
         // $router->get('/{id}', ProductTagController::class . '@show');
+    });
+
+    $router->mount('/orders', function () use ($router) {
+        $router->get('/', OrderController::class . '@index');
+        $router->post('{id}/handleEdit', OrderController::class . '@handleEdit');
+        // $router->get('/create', CommentController::class . '@create');
+        // $router->post('/store', CommentController::class . '@store');
+        // $router->get('/{id}/edit', CommentController::class . '@edit');
+        // $router->post('/{id}/update', CommentController::class . '@update');
+        // $router->post('/{id}/delete', CommentController::class . '@delete');
+        $router->get('/{id}', OrderController::class . '@show');
     });
 });
