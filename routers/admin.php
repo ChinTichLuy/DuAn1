@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Admin\BannerController;
 use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\CommentController;
 use App\Controllers\Admin\DashBoardController;
@@ -90,5 +91,15 @@ $router->mount('/admin', function () use ($router) {
         // $router->post('/{id}/update', CommentController::class . '@update');
         // $router->post('/{id}/delete', CommentController::class . '@delete');
         $router->get('/{id}', OrderController::class . '@show');
+    });
+
+    $router->mount('/banners', function () use ($router) {
+        $router->get('/', BannerController::class . '@index');
+        $router->get('/create', BannerController::class . '@create');
+        $router->post('/store', BannerController::class . '@store');
+        // $router->get('/{id}/edit', CommentController::class . '@edit');
+        // $router->post('/{id}/update', CommentController::class . '@update');
+        // $router->post('/{id}/delete', CommentController::class . '@delete');
+        // $router->get('/{id}', OrderController::class . '@show');
     });
 });

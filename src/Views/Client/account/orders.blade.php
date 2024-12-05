@@ -28,7 +28,11 @@
                         <tr>
                             <td>{{ limitText($order['order_code'], 10) }}</td>
                             <td>2</td>
-                            <td>{{ $order['status_order'] }}</td>
+                            <td>
+                                <span class="p-2 badge {{ matchStatusOrderClass($order['status_order']) }}">
+                                    {{ matchStatusOrder($order['status_order']) }}
+                                </span>
+                            </td>
                             <td>
                                 <span
                                     class="p-2 badge {{ $order['status_payment'] == 'unpaid' ? 'bg-danger' : 'bg-success' }}"

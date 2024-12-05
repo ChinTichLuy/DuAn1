@@ -69,13 +69,6 @@
                 </a>
             </li>
 
-            <li class="#">
-                <a href="{{ routeAdmin('products') }}" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-products">Products</span>
-                </a>
-            </li>
-
             <li>
                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                     <i class="bx bx-share-alt"></i>
@@ -114,66 +107,13 @@
                 </a>
             </li>
 
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-flash-sale">Flash Sale</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-coupons">Coupons</span>
-                </a>
-            </li>
-
             <li class="menu-title" key="t-settings">Settings</li>
 
             <li>
-                <a href="#" class="waves-effect">
+                <a href="{{ routeAdmin('banners') }}" class="waves-effect">
                     <i class="bx bx-receipt"></i>
                     <span key="t-banner">Banner</span>
                 </a>
-            </li>
-
-
-            <li>
-                <a href="#" class="waves-effect">
-                    <i class="bx bx-receipt"></i>
-                    <span key="t-menu">Menu</span>
-                </a>
-            </li>
-
-            <li class="menu-title" key="t-messages">Messages</li>
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-map"></i>
-                    <span key="t-maps">Products</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="maps-google.html" key="t-g-maps">Colors</a></li>
-                    <li><a href="maps-vector.html" key="t-v-maps">Vector Maps</a></li>
-                    <li><a href="maps-leaflet.html" key="t-l-maps">Leaflet Maps</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                    <i class="bx bx-share-alt"></i>
-                    <span key="t-multi-level">Multi Level</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="true">
-                    <li><a href="javascript: void(0);" key="t-level-1-1">Level 1.1</a></li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow" key="t-level-1-2">Level 1.2</a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);" key="t-level-2-1">Level 2.1</a></li>
-                            <li><a href="javascript: void(0);" key="t-level-2-2">Level 2.2</a></li>
-                        </ul>
-                    </li>
-                </ul>
             </li>
 
         </ul>
