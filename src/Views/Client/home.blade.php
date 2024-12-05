@@ -9,10 +9,10 @@
     @include('layouts.components.categories-home-slider')
 </div>
 <section class="products-section pt-0">
-    @include('layouts.components.products-slider', ['title' => 'Featured Product', 'products' => $top10])
+    @include('layouts.components.products-slider', ['title' => 'New Product', 'products' => $newProduct])
 </section>
 <section class="products-section pt-0">
-    @include('layouts.components.products-slider', ['title' => 'New Product', 'products' => $top10])
+    @include('layouts.components.products-slider', ['title' => 'Sale Product', 'products' => $saleProduct])
     <div class="container">
         <div class="banner banner-big-sale appear-animate" data-animation-delay="200"
             data-animation-name="fadeInUpShorter"
@@ -33,7 +33,7 @@
     </div>
 </section>
 <section class="products-section pt-0">
-    @include('layouts.components.products-slider', ['title' => 'Sale Product', 'products' => $top10])
+    @include('layouts.components.products-slider', ['title' => 'Top 10 Product', 'products' => $top10Product])
 </section>
 <section class="feature-boxes-container">
     <div class="container appear-animate" data-animation-name="fadeInUpShorter">
