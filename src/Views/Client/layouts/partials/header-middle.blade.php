@@ -3,7 +3,7 @@
         <button class="mobile-menu-toggler text-primary mr-2" type="button">
             <i class="fas fa-bars"></i>
         </button>
-        <a href="#" class="logo">
+        <a href="{{ routeClient() }}" class="logo">
             <img src="{{ asset('theme/client/images/logo.png') }}" width="111" height="44" alt="Porto Logo">
         </a>
     </div>

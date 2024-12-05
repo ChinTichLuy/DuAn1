@@ -26,13 +26,11 @@
                             Name
                             <span class="required">*</span>
                         </label>
-                        <input type="text" class="form-input form-wide" name="name" value="" required>
-                        {{-- @error('name')
+                        <input type="text" class="form-input form-wide" name="name"
+                            value="{{ getOldValue('name') }}" required>
                         <div class="text-danger fst-italic">
-                            <span class="required">*</span>
-                            {{ $message }}
+                            {{ error('name') }}
                         </div>
-                        @enderror --}}
                     </div>
                     <div>
                         <label for="register-email">
@@ -40,13 +38,10 @@
                             <span class="required">*</span>
                         </label>
                         <input type="email" name="email" class="form-input form-wide" id="register-email"
-                            value="" required />
-                        {{-- @error('email')
+                            value="{{ getOldValue('email') }}" required />
                         <div class="text-danger fst-italic">
-                            <span class="required">*</span>
-                            {{ $message }}
+                            {{ error('email') }}
                         </div>
-                        @enderror --}}
                     </div>
                     <div>
                         <label for="register-password">
@@ -54,13 +49,10 @@
                             <span class="required">*</span>
                         </label>
                         <input type="password" name="password" class="form-input form-wide" id="register-password"
-                            value="" required />
-                        {{-- @error('password')
+                            required />
                         <div class="text-danger fst-italic">
-                            <span class="required">*</span>
-                            {{ $message }}
+                            {{ error('password') }}
                         </div>
-                        @enderror --}}
                     </div>
                     <div class="form-footer">
                         <a href="{{ routeClient('auth/login') }}" class="text-black-50 fs-3">Login</a>
