@@ -39,3 +39,14 @@ toastr.options = {
   newestOnTop: true,
   preventDuplicates: true,
 };
+
+// search
+
+// Lấy ra url hiện tại
+const currentUrl = window.location.href;
+
+if (currentUrl.includes("?q=") && !currentUrl.includes('/shop')) {
+  const query = window.location.search;
+  const newUrl = `http://localhost/b3_du_an1/shop${query}`;
+  window.location.href = newUrl;
+}

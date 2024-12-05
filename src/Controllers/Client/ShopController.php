@@ -25,14 +25,20 @@ class ShopController extends Controller
 
         $categorySearch = $_GET['category'] ?? null;
 
-        [$products, $totalPage] = $this->product->getAllShop($page, 20);
+        $key = $_GET['q'] ?? null;
 
         $productColors = $this->productColor->getAll('*');
 
 
         // Xử lý logic filter product
 
-
+        if ($key) {
+            [$products, $totalPage] = $this->product->filterProduct($page, 20, $key);
+        } else if ($categorySearch) {
+            [$products, $totalPage] = $this->product->filterProduct($page, 20, null, $categorySearch);
+        } else {
+            [$products, $totalPage] = $this->product->getAllShop($page, 20);
+        }
 
         // dd($productColors);
 
