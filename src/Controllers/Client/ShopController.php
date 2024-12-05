@@ -8,6 +8,7 @@ class ShopController extends Controller
     private Product $product;
     public function __construct()
     {
+        middleware_private_for_admin();
         $this->product = new Product();
     }
     public function index()

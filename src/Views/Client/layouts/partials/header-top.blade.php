@@ -10,22 +10,18 @@
                 <ul>
                     @if (!empty($_SESSION['user']))
                         <li>
-                            <a href="#">Account</a>
+                            <a href="{{ routeClient('account') }}">Account</a>
                         </li>
-                        <div>
-                            <li>
-                                <a href="#">Logout</a>
-                            </li>
-                            <form id="logout-form" action="#" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
+
+                        <li>
+                            <a href="{{ routeClient('auth/logout') }}">Logout</a>
+                        </li>
                     @else
                         <li>
-                            <a href="#">Login</a>
+                            <a href="{{ routeClient('auth/login') }}">Login</a>
                         </li>
                         <li>
-                            <a href="#">Register</a>
+                            <a href="{{ routeClient('auth/register') }}">Register</a>
                         </li>
                     @endif
                 </ul>

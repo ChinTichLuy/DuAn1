@@ -14,6 +14,7 @@ class CheckOutController extends Controller
     private OrderItem $orderItem;
     public function __construct()
     {
+        middleware_private_for_admin();
         $this->cart = new Cart();
         $this->cartItem = new CartItem();
         $this->order = new Order();

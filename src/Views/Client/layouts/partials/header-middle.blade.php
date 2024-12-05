@@ -52,15 +52,19 @@
             </h6>
         </div>
         {{-- Login --}}
-        @guest
-            <a href="#" class="header-icon" title="Login">
-                <i class="icon-user-2"></i>
-            </a>
+
+
+        @if(!empty($_SESSION['user']))
+        <a href="{{ routeClient('account') }}" class="header-icon" title="{{ $_SESSION['user']['name'] }}">
+            <i class="icon-user-2"></i>
+        </a>
         @else
-            <a href="#" class="header-icon" title="Nhom 1">
-                <i class="icon-user-2"></i>
-            </a>
-        @endguest
+        <a href="{{ routeClient('auth/login') }}" class="header-icon" title="Login">
+            <i class="icon-user-2"></i>
+        </a>
+        @endif
+
+
         <a href="#" class="header-icon" title="Wishlist">
             <i class="icon-wishlist-2"></i>
         </a>

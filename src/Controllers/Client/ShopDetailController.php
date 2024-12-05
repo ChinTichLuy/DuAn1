@@ -21,6 +21,7 @@ class ShopDetailController extends Controller
     private CartItem $cartItem;
     public function __construct()
     {
+        middleware_private_for_admin();
         $this->product = new Product();
         $this->productGallery = new ProductGallery();
         $this->productTag = new ProductTag();

@@ -13,6 +13,7 @@ class CartController extends Controller
     private CartItem $cartItem;
     public function __construct()
     {
+        middleware_private_for_admin();
         $this->cart = new Cart();
         $this->cartItem = new CartItem();
     }

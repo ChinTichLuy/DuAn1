@@ -10,6 +10,7 @@ use App\Controllers\Client\HomeController;
 use App\Controllers\Client\ShopController;
 use App\Controllers\Client\ShopDetailController;
 
+
 $router->get('/', HomeController::class . '@index');
 $router->get('shop', ShopController::class . '@index');
 $router->get('shop/{slug}/detail', ShopDetailController::class . '@index');
@@ -29,14 +30,14 @@ $router->mount('/checkout', function () use ($router) {
 // handle authentication
 
 $router->mount('/auth', function () use ($router) {
-    // $router->get('/login', LoginController::class . '@showFormLogin');
-    // $router->post('/login', LoginController::class . '@login');
-    // // handle register user
-    // $router->get('/register', RegisterController::class . '@showFormRegister');
-    // $router->post('/register', RegisterController::class . '@register');
+    $router->get('/login', LoginController::class . '@showFormLogin');
+    $router->post('/login', LoginController::class . '@login');
+    // handle register user
+    $router->get('/register', RegisterController::class . '@showFormRegister');
+    $router->post('/register', RegisterController::class . '@register');
 
     // // route logout
-    // $router->get('logout', LoginController::class . '@logout');
+    $router->get('logout', LoginController::class . '@logout');
 });
 
 // handle comment

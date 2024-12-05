@@ -371,3 +371,20 @@ if (!function_exists('middleware_auth')) {
         }
     }
 }
+
+if (!function_exists('middleware_private_route')) {
+    function middleware_private_route()
+    {
+        isset($_SESSION['user']) ? header('location: ' . routeClient()) && exit() : null;
+    }
+}
+
+if (!function_exists('middleware_private_for_admin')) {
+    function middleware_private_for_admin()
+    {
+            if(isset($_SESSION['user']) && $_SESSION['user']['role'] == 1){
+        header('location: ' .  routeAdmin());
+        exit();
+    }
+    }
+}
