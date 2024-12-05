@@ -338,7 +338,7 @@ if (!function_exists('middleware_private_route')) {
 ## function helper tạo mã order_code unique
 
 if (!function_exists('generateOrderCode')) {
-    function generateOrderCode($prefix = '#nhom1_', $length = 10)
+    function generateOrderCode($prefix = 'nhom1_', $length = 10)
     {
         $time = time();
         $randomString = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, $length);
