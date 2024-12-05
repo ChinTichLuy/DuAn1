@@ -22,8 +22,13 @@ const handleAddToCart = (productId, variantId, quantity) => {
       quantity: quantity,
     },
     success: function (res) {
-      toastr.success("Thêm vào giỏ hàng thành công");
-      console.log(res);
+      if (!res.status) {
+        toastr.error(res.message);
+        console.log(res);
+      } else {
+        toastr.success("Thêm vào giỏ hàng thành công");
+        console.log(res);
+      }
     },
     error: function (err) {
       console.error(err);
