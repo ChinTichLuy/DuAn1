@@ -287,16 +287,6 @@ if (!function_exists('momo')) {
         $ipnUrl = $_ENV['BASE_URL'] . 'checkout/momo';
         $extraData = "";
 
-        // $partnerCode = $partnerCode;
-        // $accessKey = $accessKey;
-        // $serectkey = $secretKey;
-        // $orderId = $orderId; // Mã đơn hàng
-        // $orderInfo = $orderInfo;
-        // $amount = $amount;
-        // $ipnUrl = $ipnUrl;
-        // $redirectUrl = $redirectUrl;
-        // $extraData = $extraData;
-
         $requestId = time() . "";
         $requestType = "payWithATM";
         // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");

@@ -33,10 +33,10 @@
                                                     <abbr class="required" title="required">*</abbr>
                                                 </label>
                                                 <input type="text" name="user_name" class="form-control"
-                                                    value="#" />
-                                                {{-- @error('user_name') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                     />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_name') }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -44,10 +44,10 @@
                                                 <label>Email
                                                     <abbr class="required" title="required">*</abbr></label>
                                                 <input type="email" name="user_email" class="form-control"
-                                                    value="" />
-                                                {{-- @error('user_email') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                     />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_email') }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -59,10 +59,12 @@
                                                     <abbr class="required" title="required">*</abbr>
                                                 </label>
                                                 <input type="tel" name="user_phone" class="form-control"
-                                                    value="#" />
-                                                {{-- @error('user_phone') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                     />
+                                                
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_phone') }}
+                                                </span>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -70,10 +72,10 @@
                                                 <label>Address
                                                     <abbr class="required" title="required">*</abbr></label>
                                                 <input type="text" name="user_address" class="form-control"
-                                                    value="#" />
-                                                {{-- @error('user_address') --}}
-                                                <span class="fst-italic text-danger">Lỗi nha</span>
-                                                {{-- @enderror --}}
+                                                     />
+                                                <span class="fst-italic text-danger">
+                                                    {{ error('user_address') }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -114,42 +116,7 @@
                                     <input type="text" hidden name="city_main">
                                     <input type="text" hidden name="district_main">
                                     <input type="text" hidden name="ward_main">
-                                    {{-- @foreach ($cart->cartItems as $key => $item)
-                                        @php
-                                            $price =
-                                                $item->productVariant->product->price_sale ?:
-                                                $item->productVariant->product->price_regular;
-                                            $slug = $item->productVariant->product->slug;
-                                            $image = $item->productVariant->product->thumb_image;
-                                            $name = $item->productVariant->product->name;
-                                            $color = $item->productVariant->color->name;
-                                            $size = $item->productVariant->size->name;
-                                            $sku = $item->productVariant->product->sku;
-                                        @endphp
-                                        <input type="text" hidden name="product[{{ $key }}][product_variant_id]"
-                                            value="{{ $item->product_variant_id }}">
-                                        <input type="text" hidden name="product[{{ $key }}][quantity]"
-                                            value="{{ $item->quantity }}">
-                                        <input type="text" hidden name="product[{{ $key }}][product_name]"
-                                            value="{{ $name }}">
-                                        <input type="text" hidden name="product[{{ $key }}][product_sku]"
-                                            value="{{ $sku }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_img_thumbnail]"
-                                            value="{{ $image }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_price_regular]"
-                                            value="{{ $item->productVariant->product->price_regular }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][product_price_sale]"
-                                            value="{{ $item->productVariant->product->price_sale }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][variant_size_name]"
-                                            value="{{ $size }}">
-                                        <input type="text" hidden
-                                            name="product[{{ $key }}][variant_color_name]"
-                                            value="{{ $color }}">
-                                    @endforeach --}}
+
                                     <div class="form-group mb-1">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="create-account" />
@@ -292,8 +259,8 @@
                                 <h4 class="">Payment methods</h4>
                                 <div class="form-check">
                                     <div>
-                                        <input class="form-check-input" type="radio" value="0"
-                                            name="payment" checked />
+                                        <input class="form-check-input" type="radio" value="0" name="payment"
+                                            checked />
                                         <label class="form-check-label" for="">
                                             Thanh Toán Nhận Hàng
                                         </label>
