@@ -14,7 +14,7 @@ class ShopController extends Controller
     public function index()
     {
         $page = $_GET['page'] ?? 1;
-        [$products, $totalPage] = $this->product->getAllShop($page, 2);
+        [$products, $totalPage] = $this->product->getAllShop($page, 10);
         // dd($totalPage);
         return $this->viewClient(self::PATH_VIEW, [
             'products' => $products,
