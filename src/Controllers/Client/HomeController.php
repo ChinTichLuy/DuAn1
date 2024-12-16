@@ -13,6 +13,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->product = new Product();
+        middleware_private_for_admin();
     }
 
     public function index()

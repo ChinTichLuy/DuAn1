@@ -28,13 +28,11 @@ class CheckOutController extends Controller
         $this->order = new Order();
         $this->orderItem = new OrderItem();
         $this->user = new User();
+        middleware_private_for_admin();
     }
 
     public function index()
     {
-
-        $authenTication = 26;
-
         $userId = $_SESSION['user']['id'] ?? null;
 
         if ($userId) {
@@ -66,8 +64,6 @@ class CheckOutController extends Controller
 
         ## Lấy ra id của user ?? nếu k có thì == null
         $userId = $_SESSION['user']['id'] ?? null;
-
-        $authenTication = 26;
 
         if ($userId) {
             ## Nếu có người dùng thì tìm trong db
@@ -269,7 +265,6 @@ class CheckOutController extends Controller
     {
         $message = $_GET['message'] ?? 'Giao dịch bị từ chối bởi người dùng.';
         $resultCode = $_GET['resultCode'] ?? null;
-        $authenTication = 26; // thay bằng id của user sau khi login
         $userId = $_SESSION['user']['id'] ?? null;
 
 

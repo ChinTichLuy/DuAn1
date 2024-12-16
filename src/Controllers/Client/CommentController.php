@@ -13,6 +13,7 @@ class CommentController extends Controller
     {
         parent::__construct();
         $this->comment = new Comment();
+        middleware_private_for_admin();
     }
 
     public function add()

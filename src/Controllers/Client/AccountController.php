@@ -24,6 +24,7 @@ class AccountController extends Controller
         $this->orderItem = new OrderItem();
 
         middleware_isAuth();
+        middleware_private_for_admin();
     }
 
     public function index()

@@ -419,3 +419,13 @@ if (!function_exists('matchStatusPayMent')) {
         };
     }
 }
+
+if (!function_exists('middleware_private_for_admin')) {
+    function middleware_private_for_admin()
+    {
+            if(isset($_SESSION['user']) && $_SESSION['user']['role'] == 1){
+        header('location: ' .  routeAdmin());
+        exit();
+    }
+    }
+}

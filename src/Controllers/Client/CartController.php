@@ -19,12 +19,13 @@ class CartController extends Controller
     {
         $this->cart = new Cart();
         $this->cartItem = new CartItem();
+        middleware_private_for_admin();
     }
 
     public function index()
     {
 
-        $authenticate = 26;
+        // dd($_SESSION);
 
         $userId = $_SESSION['user']['id'] ?? null;
 

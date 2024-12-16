@@ -18,6 +18,7 @@ class ShopController extends Controller
         $this->product = new Product();
         $this->category = new Category();
         $this->productColor = new ProductColor();
+        middleware_private_for_admin();
     }
     public function index()
     {

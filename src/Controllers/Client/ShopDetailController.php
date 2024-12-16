@@ -34,6 +34,7 @@ class ShopDetailController extends Controller
         $this->cart = new Cart();
         $this->cartItem = new CartItem();
         $this->comment = new Comment();
+        middleware_private_for_admin();
     }
 
     public function index($slug)
@@ -71,10 +72,6 @@ class ShopDetailController extends Controller
 
     public function handleAddToCart()
     {
-        // co nguoi dung
-
-        $authenticate = true;
-
         $userId = $_SESSION['user']['id'] ?? null;
 
         $productVariantId = $_POST['product_variant_id'];
@@ -191,8 +188,6 @@ class ShopDetailController extends Controller
 
     public function handleUpdateCart()
     {
-        $authenticate = 26;
-
         $userId = $_SESSION['user']['id'] ?? null;
 
         $id = $_POST['cartItemId'];

@@ -197,7 +197,7 @@ class ProductController extends Controller implements CRUDinterfaces
         $product = $this->product->find($id);
 
         if ($product) {
-            $this->product->delete($id);
+            $this->product->delete2($id);
             $imageOld = $product['thumb_image'];
 
             delete_image($imageOld);

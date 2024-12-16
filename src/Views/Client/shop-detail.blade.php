@@ -65,34 +65,6 @@
                                 </div>
                             </div>
                         @endif
-
-                        {{-- @if (!empty($product->galleries->isNotEmpty()))
-                            <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-                                @foreach ($product->galleries as $image)
-                                    <div class="product-item">
-                                        @if ($image && Storage::exists($image->image))
-                                            <img class="product-single-image" src="{{ Storage::url($image->image) }}"
-                                                data-zoom-image="{{ Storage::url($image->image) }}" width="468px"
-                                                height="468px" alt="product" style="height: 478px" />
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-                                <div class="product-item">
-                                    @if ($product->thumb_image && Storage::exists($product->thumb_image))
-                                        <img class="product-single-image" src="{{ Storage::url($product->thumb_image) }}"
-                                            data-zoom-image="{{ Storage::url($product->thumb_image) }}" width="478px"
-                                            height="478px" alt="product" style="height: 478px;" />
-                                    @else
-                                        <img class="product-single-image" src="{{ $product->thumb_image }}"
-                                            data-zoom-image="/assets/theme/client/images/products/zoom/product-1-big.jpg"
-                                            width="468" height="468" alt="product" />
-                                    @endif
-                                </div>
-                            </div>
-                        @endif --}}
                         <!-- End .product-single-carousel -->
                         <span class="prod-full-screen">
                             <i class="icon-plus"></i>
@@ -392,49 +364,6 @@
                     <div class="product-reviews-content">
                         {{-- <h3 class="reviews-title">1 review for Men Black Sports Shoes</h3> --}}
                         <div class="comment-list">
-                            {{-- @if ($comments->isNotEmpty())
-                                @foreach ($comments as $comment)
-                                    <div class="comments mb-1">
-                                        <figure class="img-thumbnail">
-                                            @php
-                                                $image = $comment->user->avatar;
-                                            @endphp
-                                            @if ($image && Storage::exists($image))
-                                                <img src="{{ Storage::url($image) }}" alt="{{ $comment->user->name }}"
-                                                    width="80" height="80">
-                                            @else
-                                                <img src="https://laravel.com/img/logomark.min.svg" alt="Default"
-                                                    width="80" height="80">
-                                            @endif
-                                        </figure>
-                                        <div class="comment-block">
-                                            <div class="comment-header">
-                                                <div class="comment-arrow"></div>
-                                                <div class="ratings-container float-sm-right">
-                                                    <div class="product-ratings">
-                                                        <span class="ratings"
-                                                            style="width:{{ matchRatings($comment->rating) }}"></span>
-                                                        <!-- End .ratings -->
-                                                        <span class="tooltiptext tooltip-top"></span>
-                                                    </div>
-                                                    <!-- End .product-ratings -->
-                                                </div>
-                                                <span class="comment-by">
-                                                    <strong>{{ $comment->user->name }}</strong>
-                                                    – {{ $comment->created_at }}
-                                                </span>
-                                            </div>
-                                            <div class="comment-content">
-                                                <p>
-                                                    {{ $comment->content }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @else
-                                <h1>Chua co comment nao</h1>
-                            @endif --}}
 
                             @if (!empty($comments))
                                 @foreach ($comments as $key => $comment)

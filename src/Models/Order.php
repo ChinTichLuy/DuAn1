@@ -75,6 +75,7 @@ class Order extends Model
                 ->from($this->tableName, 'o')
                 ->innerJoin('o', 'order_items', 'oi', 'o.id = oi.order_id')
                 ->groupBy('o.id')
+                ->orderBy('o.id', 'DESC')
                 ->fetchAllAssociative();
             return $data;
         } catch (\Throwable $th) {
