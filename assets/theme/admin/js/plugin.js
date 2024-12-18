@@ -6,19 +6,19 @@
       switch (t) {
         case "light-mode-switch":
           document.documentElement.removeAttribute("dir"),
-            "/b3_du_an1/assets/theme/admin/css/bootstrap.min.css" !=
+            "/duan1/assets/theme/admin/css/bootstrap.min.css" !=
               document.getElementById("bootstrap-style").getAttribute("href") &&
               document
                 .getElementById("bootstrap-style")
                 .setAttribute(
                   "href",
-                  "/b3_du_an1/assets/theme/admin/css/bootstrap.min.css"
+                  "/duan1/assets/theme/admin/css/bootstrap.min.css"
                 ),
-            "/b3_du_an1/assets/theme/admin/css/app.min.css" !=
+            "/duan1/assets/theme/admin/css/app.min.css" !=
               document.getElementById("app-style").getAttribute("href") &&
               document
                 .getElementById("app-style")
-                .setAttribute("href", "/b3_du_an1/assets/theme/admin/css/app.min.css"),
+                .setAttribute("href", "/duan1/assets/theme/admin/css/app.min.css"),
             document.documentElement.setAttribute("data-bs-theme", "light");
           break;
         case "dark-mode-switch":
